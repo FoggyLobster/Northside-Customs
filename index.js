@@ -22,16 +22,4 @@ require("./handlers/modalHandler")(client);
 require("./handlers/menuHandler")(client);
 require("./handlers/buttonHandler")(client);
 
-setInterval(() => {
-  member.client.user.setPresence({
-    activities: [
-      {
-        name: `Looking over ${member.guild.memberCount.toLocalString()} members`,
-        type: "WATCHING",
-      },
-    ],
-    status: "idle",
-  });
-}, 30000);
-
 client.login(process.env.DISCORD_TOKEN);
