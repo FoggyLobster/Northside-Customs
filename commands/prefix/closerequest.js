@@ -14,7 +14,8 @@ module.exports = {
       return;
     }
 
-    const [userId] = message.channel.name.split("-");
+    const [ticketOwner] = message.channel.name.split("-");
+    const userId = message.guild.members.cache.get(ticketOwner).user.id;
     await message.delete();
     await message.channel.send({
       flags: 32768,
@@ -24,7 +25,7 @@ module.exports = {
           components: [
             {
               type: 10,
-              content: `# <:bell:1503469398676209820> Close Request\n<@${userId}>`,
+              content: `# Close Request\n<@${userId}>`,
             },
             {
               type: 14,
