@@ -1,53 +1,68 @@
-const {
-  PermissionFlagsBits,
-  ActionRowBuilder,
-  ContainerBuilder,
-  ChannelType,
-  StringSelectMenuBuilder,
-  StringSelectMenuOptionBuilder,
-} = require("discord.js");
+const { ChannelType, PermissionFlagsBits } = require("discord.js");
+
+const Support_roles = ["1520836300461183169"];
 
 module.exports = {
   id: "order_menu",
 
   async execute(interaction) {
-    const selected = interaction.options.get[`order_menu`];
+    const selected = interaction.values[0];
+
     const ticketCategory = interaction.guild.channels.cache.find(
-      (channel) => channel.name === "tickets",
+      (channel) =>
+        channel.type === ChannelType.GuildCategory &&
+        channel.name.toLowerCase() === "tickets",
     );
 
     if (!ticketCategory) {
       return interaction.reply({
-        content: "Could not find the tickets category.",
+        content: "Could not find the **tickets** category.",
         ephemeral: true,
       });
     }
 
-    const ticketChannel = client.channel.create(
-      interaction.guild.id,
-      {
-        name: `${selected}-${interaction.user.username}`,
-        type: ChannelType.GuildText,
-        parent: ticketCategory.id,
-      },
-      await PermissionFlagsBits.has({
-        member: interaction.member,
-        permissions: [
-          PermissionFlagsBits.ViewChannel,
-          PermissionFlagsBits.SendMessages,
-          PermissionFlagsBits.ManageChannels,
-        ],
-        inherited: true,
-      }),
-    );
+    const ticketChannel = await interaction.guild.channels.create({
+      name: `${selected}-${interaction.user.username}`,
+      type: ChannelType.GuildText,
+      parent: ticketCategory.id,
+      permissionOverwrites: [
+        {
+          id: interaction.guild.roles.everyone.id,
+          deny: [PermissionFlagsBits.ViewChannel],
+        },
+        ...Support_roles.map((role) => ({
+          id: role,
+          allow: [
+            PermissionFlagsBits.ViewChannel,
+            PermissionFlagsBits.SendMessages,
+          ],
+        })),
+        {
+          id: interaction.user.id,
+          allow: [
+            PermissionFlagsBits.ViewChannel,
+            PermissionFlagsBits.SendMessages,
+            PermissionFlagsBits.ReadMessageHistory,
+          ],
+        },
+        {
+          id: interaction.guild.members.me.id,
+          allow: [
+            PermissionFlagsBits.ViewChannel,
+            PermissionFlagsBits.SendMessages,
+            PermissionFlagsBits.ManageChannels,
+          ],
+        },
+      ],
+    });
 
     await interaction.reply({
-      content: `Created ticket channel ${ticketChannel.name}`,
+      content: `Created ticket channel: ${ticketChannel}`,
       ephemeral: true,
     });
 
     await ticketChannel.send({
-      content: `Welcome to the ${selected} ticket channel, ${interaction.user.username}!`,
+      content: `Welcome ${interaction.user}! You selected **${selected}**. A staff member will assist you shortly.`,
     });
   },
 };
