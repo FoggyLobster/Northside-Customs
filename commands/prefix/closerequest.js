@@ -19,10 +19,15 @@ module.exports = {
 
     await message.delete().catch(() => {});
 
-    // Safer ticket owner extraction (expects: userId-xxx OR similar)
-    const ticketOwnerId = message.channel.name.split("-")[0];
+    // channel name: orderType-username
+    const [, username] = message.channel.name.split("-");
 
-    let userMention = `<@${ticketOwnerId}>`;
+    // Find member by username (best-effort match)
+    const member = message.guild.members.cache.find(
+      (m) => m.user.username.toLowerCase() === username.toLowerCase(),
+    );
+
+    const userMention = member ? `<@${member.id}>` : `@${username}`;
 
     const container = new ContainerBuilder()
       .addTextDisplayComponents(
@@ -33,7 +38,7 @@ module.exports = {
         new TextDisplayBuilder().setContent(
           "Our team feels you may no longer need assistance.\n\n" +
             "If your issue is resolved, click **Close**.\n" +
-            "If you still need help, click **Keep Open** and a staff member will respond shortly.",
+            "If you still need help, click **Keep Open**.",
         ),
       )
       .addActionRowComponents(
