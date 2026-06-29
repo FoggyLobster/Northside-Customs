@@ -1,7 +1,7 @@
 module.exports = {
   name: "close",
   description: "Closes the ticket.",
-  execute(message) {
+  async execute(message) {
     const hasRoles = message.member.roles.cache.has("1520836300461183169");
     const isAdmin = message.member.permissions.has("Administrator");
 
@@ -9,12 +9,9 @@ module.exports = {
       return message.reply("You do not have permission to close this ticket.");
     }
 
-    const ticketChannel = channel.name.startsWith([
-      "livery-",
-      "uniform-",
-      "photography-",
-      "graphics-",
-    ]);
+    const ticketChannel = message.guild.channels.cache.find((channel) =>
+      channel.name.startsWith("order-"),
+    );
 
     if (!ticketChannel) {
       return message.reply("This is not a ticket channel.");
@@ -22,8 +19,9 @@ module.exports = {
 
     message.reply("Closing the ticket...");
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    sleep(5000).then(() => {
-      message.channel.delete();
-    });
+
+    await sleep(5000);
+
+    await message.channel.delete();
   },
 };

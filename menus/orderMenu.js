@@ -20,8 +20,22 @@ module.exports = {
       });
     }
 
+    const ticketExists = await interaction.guild.channels.cache.find(
+      (channel) =>
+        channel.type === ChannelType.GuildText &&
+        channel.name.startsWith("order-") &&
+        channel.name.endsWith(interaction.user.username),
+    );
+
+    if (ticketExists) {
+      return interaction.reply({
+        content: "A ticket already exists for this user.",
+        ephemeral: true,
+      });
+    }
+
     const ticketChannel = await interaction.guild.channels.create({
-      name: `${selected}-${interaction.user.username}`,
+      name: `order-${interaction.user.username}`,
       type: ChannelType.GuildText,
       parent: ticketCategory.id,
       permissionOverwrites: [
@@ -61,12 +75,12 @@ module.exports = {
     });
 
     if (selected === "livery") {
-      Type = "<@&1521157922321862656>";
-    } else if (selected === "uniform") {
       Type = "<@&1521157913396383764>";
+    } else if (selected === "uniform") {
+      Type = "<@&1521157922321862656>";
     } else if (selected === "photography") {
       Type = "<@&1521157924771201185>";
-    } else if (selected === "graphics") {
+    } else if (selected === "graphic") {
       Type = "<@&1521157927291846808>";
     }
 
@@ -80,7 +94,7 @@ module.exports = {
           components: [
             {
               type: 10,
-              content: `Welcome ${interaction.user}, please standby as a **${Type} Designer** will be taking this order. Please follow the order format to give your designer details on what you'd like to receive.\n`,
+              content: `Welcome ${interaction.user} | @here \n\n Please standby as a **${Type} Designer** will be taking this order. Please follow the order format to give your designer details on what you'd like to receive.\n`,
             },
             {
               type: 14,

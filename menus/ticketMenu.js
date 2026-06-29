@@ -6,7 +6,7 @@ const {
 } = require("discord.js");
 
 module.exports = {
-  customId: "ticketMenu",
+  customId: "ticketActions",
 
   async execute(interaction) {
     const selected = interaction.values[0];
@@ -15,7 +15,7 @@ module.exports = {
       await interaction.reply(`${interaction.user} has claimed the ticket.`);
     }
 
-    if (selected === "close") {
+    if (selected === "closeSelect") {
       await interaction.reply(`Closing the ticket...`);
 
       const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

@@ -1,3 +1,5 @@
+const { EmbedBuilder } = require("discord.js");
+
 module.exports = {
   customId: "ticketRename",
   async execute(interaction) {
@@ -5,11 +7,15 @@ module.exports = {
 
     await interaction.channel.setName(name);
 
-    const msg = interaction.reply(`Renamed ticket to ${name}`);
+    const embed = new EmbedBuilder()
+      .setTitle("Ticket Renamed")
+      .setDescription(`Ticket has been renamed to \`${name}\``)
+      .setFooter({
+        text: `Renamed by ${interaction.user.tag} | Today at ${new Date().toLocaleTimeString()}`,
+      });
 
-    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-    await sleep(5000);
-    await msg.delete();
+    await interaction.reply({
+      embeds: [embed],
+    });
   },
 };
