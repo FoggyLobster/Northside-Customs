@@ -60,15 +60,13 @@ module.exports = {
       ephemeral: true,
     });
 
-    const type = selected;
-
     if (selected === "livery") {
       Type = "<@&1521157922321862656>";
     } else if (selected === "uniform") {
       Type = "<@&1521157913396383764>";
     } else if (selected === "photography") {
       Type = "<@&1521157924771201185>";
-    } else if (selected === "graphic") {
+    } else if (selected === "graphics") {
       Type = "<@&1521157927291846808>";
     }
 
