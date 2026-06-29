@@ -8,13 +8,10 @@ module.exports = {
         "Please provide a valid amount of messages to purge.",
       );
     }
-    message.channel.bulkDelete(amount, true);
+    message.channel.bulkDelete(amount + 1, true);
 
-    message.reply(`Successfully purged \`${amount}\` messages.`);
-
-    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    sleep(5000).then(() => {
-      message.delete();
-    });
+    const botMessage = message.reply(
+      `Successfully purged \`${amount}\` messages.`,
+    );
   },
 };
