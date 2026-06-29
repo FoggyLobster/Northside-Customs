@@ -10,8 +10,7 @@ module.exports = {
 
     const ticketCategory = interaction.guild.channels.cache.find(
       (channel) =>
-        channel.type === ChannelType.GuildCategory &&
-        channel.name.toLowerCase() === "Orders",
+        channel.type === ChannelType.GuildCategory && channel.name === "Orders",
     );
 
     if (!ticketCategory) {
