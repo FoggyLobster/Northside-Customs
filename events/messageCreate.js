@@ -3,25 +3,18 @@ module.exports = {
 
   async execute(client, message) {
     if (message.author.bot) return;
+    if (!message.content.startsWith(client.prefix)) return;
 
-    const prefix = ">";
+    const args = message.content.slice(client.prefix.length).trim().split(/ +/);
+    const cmdName = args.shift().toLowerCase();
 
-    if (!message.content.startsWith(prefix)) return;
-
-    const args = message.content.slice(prefix.length).trim().split(/ +/g);
-    const command = args.shift().toLowerCase();
-
-    const cmd = client.commands.get(command);
+    const cmd = client.prefixCommands.get(cmdName);
     if (!cmd) return;
 
     try {
       await cmd.execute(message, args);
     } catch (err) {
       console.error(err);
-      message.reply({
-        content: "There was an error while executing that command!",
-        ephemeral: true,
-      });
     }
   },
 };

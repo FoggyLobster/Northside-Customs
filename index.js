@@ -9,12 +9,13 @@ const client = new Client({
   ],
 });
 
-client.commands = new Collection();
 client.slashCommands = new Collection();
 client.prefixCommands = new Collection();
 client.buttons = new Collection();
 client.menus = new Collection();
 client.modals = new Collection();
+
+client.prefix = ">";
 
 require("./handlers/commandHandler")(client);
 require("./handlers/eventHandler")(client);
