@@ -89,9 +89,23 @@ module.exports = {
         Date.now(),
       );
 
-      return interaction.reply({
+      await interaction.reply({
         content: `Successfully added a ${rating}/5 review for ${reviewedUser.username}.`,
         ephemeral: true,
+      });
+
+      const reviewChannel =
+        interaction.guild.channels.cache(1520788052379959376);
+
+      await reviewChannel.send({
+        embeds: [
+          {
+            color: 0x2b2d31,
+            title: `New Review from ${interaction.user.username}`,
+            description: `**User:** ${reviewedUser.username}\n**Rating:** ${rating}/5\n**Review:** ${review}`,
+            timestamp: new Date(),
+          },
+        ],
       });
     }
 
