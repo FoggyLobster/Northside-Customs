@@ -16,7 +16,7 @@ module.exports = {
 
     if (!ticketCategory) {
       return interaction.reply({
-        content: "Could not find the **tickets** category.",
+        content: "Could not find the **Orders** category.",
         ephemeral: true,
       });
     }
