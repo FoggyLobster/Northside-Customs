@@ -8,7 +8,8 @@ const client = new Client({
   ],
 });
 
-client.commands = new Collection();
+client.slashCommands = new Collection();
+client.prefixCommands = new Collection();
 client.events = new Collection();
 client.buttons = new Collection();
 client.menus = new Collection();
