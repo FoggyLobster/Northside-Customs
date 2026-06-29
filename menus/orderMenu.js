@@ -3,7 +3,7 @@ const { ChannelType, PermissionFlagsBits } = require("discord.js");
 const Support_roles = ["1520836300461183169"];
 
 module.exports = {
-  id: "order_menu",
+  customId: "order_menu",
 
   async execute(interaction) {
     const selected = interaction.values[0];
