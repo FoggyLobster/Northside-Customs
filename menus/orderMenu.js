@@ -70,6 +70,8 @@ module.exports = {
       Type = "<@&1521157927291846808>";
     }
 
+    const type = selected.charAt(0).toUpperCase() + selected.slice(1);
+
     await ticketChannel.send({
       flags: 32768,
       components: [
@@ -78,7 +80,7 @@ module.exports = {
           components: [
             {
               type: 10,
-              content: `Welcome <@${interaction.user}>, please standby as a **${Type} Designer** will be taking this order. Please follow the order format to give your designer details on what you'd like to receive.\n`,
+              content: `Welcome ${interaction.user}, please standby as a **${Type} Designer** will be taking this order. Please follow the order format to give your designer details on what you'd like to receive.\n`,
             },
             {
               type: 14,
