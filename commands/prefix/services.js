@@ -8,14 +8,14 @@ const {
 module.exports = {
   name: "services",
 
-  async execute(client, message) {
+  async execute(message) {
     const isAdmin = message.member.permissions.has("Administrator");
 
     if (!isAdmin) {
       return message.reply("You do not have permission to use this command.");
     }
 
-    await message.reply({
+    await message.channel.send({
       flags: 32768,
       components: [
         {
