@@ -104,11 +104,11 @@ module.exports = {
     const container = new ContainerBuilder()
       .addTextDisplayComponents(
         new TextDisplayBuilder().setContent(
-          `# Services Updated
+          `# Services Status
 
-The available services have been updated successfully.
+The available services have been updated. Check them out below!
 
-### Current Status
+### Current Order Status
 • **Liveries:** ${liveries}
 • **Uniforms:** ${uniforms}
 • **Photography:** ${photography}
@@ -118,7 +118,7 @@ The available services have been updated successfully.
       .addSeparatorComponents(new SeparatorBuilder());
 
     await interaction.reply({
-      flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+      flags: MessageFlags.IsComponentsV2,
       components: [container],
     });
   },
