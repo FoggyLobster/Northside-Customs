@@ -1,5 +1,5 @@
 module.exports = {
-  id: "keep_open",
+  customId: "keep_open",
 
   async execute(interaction) {
     return await interaction.reply(
