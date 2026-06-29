@@ -91,12 +91,49 @@ module.exports = {
               content: `## Format:\n\n\n\`\`\`Type of ${type}: \nQuantity: \nNotes: \nReference:\n\`\`\``,
             },
             {
+              type: 14,
+              spacing: 2,
+            },
+            {
               type: 12,
               items: [
                 {
                   media: {
                     url: "https://media.discordapp.net/attachments/1520826464948322334/1521157487745699870/Screenshot_2026-06-28_125651.png?ex=6a43cfce&is=6a427e4e&hm=0d05cb4694e8b4eaef4ca013feb4bdd40966515d52f93c20c2a7ac85cf8f4156&=&format=webp&quality=lossless&width=747&height=121",
                   },
+                },
+              ],
+            },
+            {
+              type: 14,
+            },
+            {
+              type: 1,
+              components: [
+                {
+                  type: 3,
+                  options: [
+                    {
+                      label: "Claim",
+                      value: "claim",
+                      description: "Claim this ticket",
+                    },
+                    {
+                      label: "Close this ticket",
+                      value: "closeSelect",
+                      description: "Close this ticket",
+                    },
+                    {
+                      label: "Rename ticket",
+                      value: "rename",
+                      description: "Rename this ticket",
+                    },
+                  ],
+                  placeholder: "Select an action to take in this ticket",
+                  flows: {},
+                  custom_id: "ticketActions",
+                  min_values: 1,
+                  max_values: 1,
                 },
               ],
             },
