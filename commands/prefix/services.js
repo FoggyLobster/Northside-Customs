@@ -9,7 +9,7 @@ module.exports = {
   name: "services",
 
   async execute(client, message) {
-    const isAdmin = message.member.permissions.has("ADMINISTRATOR");
+    const isAdmin = message.member.permissions.has("Administrator");
 
     if (!isAdmin) {
       return message.reply("You do not have permission to use this command.");
