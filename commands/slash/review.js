@@ -95,7 +95,7 @@ module.exports = {
       });
 
       const reviewChannel =
-        interaction.guild.channels.cache(1520788052379959376);
+        interaction.guild.channels.cache.get(1520788052379959376);
 
       await reviewChannel.send({
         embeds: [
