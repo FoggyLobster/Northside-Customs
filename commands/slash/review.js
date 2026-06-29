@@ -117,7 +117,7 @@ module.exports = {
         .slice(0, 10)
         .map(
           (r) =>
-            `ID: ${r.id}\nRating: ${r.rating}/5\nBy: ${r.given_by}\n${r.review}`,
+            `**ID:** \`${r.id}\`\n**Rating:** \`${r.rating}/5\`\n**By:** <@${r.given_by_id}>\n**Review:** ${r.review}`,
         )
         .join("\n\n");
 
