@@ -2,6 +2,8 @@ const fs = require("fs");
 const path = require("path");
 
 module.exports = (client) => {
+  client.modals = new Map();
+
   const dir = path.join(__dirname, "../modals");
   const files = fs.readdirSync(dir).filter((f) => f.endsWith(".js"));
 

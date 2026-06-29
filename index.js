@@ -10,7 +10,6 @@ const client = new Client({
 
 client.slashCommands = new Collection();
 client.prefixCommands = new Collection();
-client.events = new Collection();
 client.buttons = new Collection();
 client.menus = new Collection();
 client.modals = new Collection();

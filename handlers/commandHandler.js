@@ -3,6 +3,8 @@ const path = require("path");
 
 module.exports = (client) => {
   // prefix
+  client.prefixCommands = new Map();
+
   const prefixPath = path.join(__dirname, "../commands/prefix");
   const prefixFiles = fs
     .readdirSync(prefixPath)
@@ -14,6 +16,8 @@ module.exports = (client) => {
   }
 
   // slash
+  client.slashCommands = new Map();
+
   const slashPath = path.join(__dirname, "../commands/slash");
   const slashFiles = fs.readdirSync(slashPath).filter((f) => f.endsWith(".js"));
 
