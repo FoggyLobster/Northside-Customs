@@ -1,5 +1,5 @@
 module.exports = {
-  id: "crclose",
+  customId: "crclose",
 
   async execute(interaction) {
     await interaction.reply({
