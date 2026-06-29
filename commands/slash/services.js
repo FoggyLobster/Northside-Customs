@@ -118,6 +118,11 @@ The available services have been updated. Check them out below!
       .addSeparatorComponents(new SeparatorBuilder());
 
     await interaction.reply({
+      content: "Services status updated successfully.",
+      ephemeral: true,
+    });
+
+    await interaction.channel.send({
       flags: MessageFlags.IsComponentsV2,
       components: [container],
     });
