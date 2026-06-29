@@ -1,5 +1,6 @@
 const { Client, GatewayIntentBits, Collection } = require("discord.js");
 require("dotenv").config();
+const fs = require("fs");
 
 const client = new Client({
   intents: [
@@ -14,6 +15,9 @@ client.prefixCommands = new Collection();
 client.buttons = new Collection();
 client.menus = new Collection();
 client.modals = new Collection();
+const db = require("./db");
+
+client.db = db;
 
 client.prefix = ">";
 
