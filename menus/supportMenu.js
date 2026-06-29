@@ -99,7 +99,7 @@ Hello, ${ticketOwner}. A support member will be with you shortly.
 Please describe your issue in as much detail as possible and include any relevant evidence.
 
 **Ticket Type:** ${ticketType}
-**Ticket Owner:** ${ticketOwner} (${ticketOwnerID})
+**Ticket Owner:** ${ticketOwner} (\`${ticketOwnerID}\`)
 
 Please remain patient. If you have not received a response within 12 hours, you may ping the support team once. Excessive pinging may result in moderation action or closure of this ticket.`,
             },
