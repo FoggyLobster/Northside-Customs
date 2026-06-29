@@ -18,10 +18,8 @@ client.modals = new Collection();
 require("./handlers/commandHandler")(client);
 require("./handlers/eventHandler")(client);
 require("./handlers/modalHandler")(client);
-require("./handler/menuHandler")(client);
+require("./handlers/menuHandler")(client);
 require("./handlers/buttonHandler")(client);
-
-require("./deploy-commands");
 
 setInterval(() => {
   member.client.user.setPresence({
