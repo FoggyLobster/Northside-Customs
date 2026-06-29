@@ -60,8 +60,47 @@ module.exports = {
       ephemeral: true,
     });
 
+    if (type === "Livery") {
+      Type = "<@&1521157922321862656>";
+    } else if (type === "Uniform") {
+      Type = "<@&1521157913396383764>";
+    } else if (type === "Photography") {
+      Type = "<@&1521157924771201185>";
+    } else if (type === "Graphic") {
+      Type = "<@&1521157927291846808>";
+    }
+
     await ticketChannel.send({
-      content: `Welcome ${interaction.user}! You selected **${selected}**. A staff member will assist you shortly.`,
+      flags: 32768,
+      components: [
+        {
+          type: 17,
+          components: [
+            {
+              type: 10,
+              content: `Welcome <@${interaction.user}>, please standby as a **${Type} Designer** will be taking this order. Please follow the order format to give your designer details on what you'd like to receive.\n`,
+            },
+            {
+              type: 14,
+              spacing: 2,
+            },
+            {
+              type: 10,
+              content: `## Format:\n\n\n\`\`\`Type of ${type}: \nQuantity: \nNotes: \nReference:\n\`\`\``,
+            },
+            {
+              type: 12,
+              items: [
+                {
+                  media: {
+                    url: "https://media.discordapp.net/attachments/1520826464948322334/1521157487745699870/Screenshot_2026-06-28_125651.png?ex=6a43cfce&is=6a427e4e&hm=0d05cb4694e8b4eaef4ca013feb4bdd40966515d52f93c20c2a7ac85cf8f4156&=&format=webp&quality=lossless&width=747&height=121",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
     });
   },
 };
