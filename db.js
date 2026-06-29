@@ -11,7 +11,7 @@ if (!fs.existsSync(dataPath)) {
 const db = new Database(path.join(dataPath, "services.sqlite"));
 
 db.prepare(
-  ```
+  `
     CREATE TABLE IF NOT EXISTS services (
     message_id TEXT PRIMARY KEY,
     chann_id TEXT,
@@ -20,7 +20,7 @@ db.prepare(
     photography TEXT,
     graphics TEXT,
 )
-    ```,
+    `,
 ).run();
 
 module.exports = db;
