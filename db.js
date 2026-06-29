@@ -16,10 +16,11 @@ db.prepare(
     user TEXT NOT NULL,
     user_id TEXT NOT NULL,
     given_by TEXT NOT NULL,
+    given_by_id TEXT NOT NULL,
     review TEXT NOT NULL,
     rating INTEGER NOT NULL,
-    timestamp TEXT NOT NULL
-  )`,
+    timestamp INTEGER NOT NULL
+);`,
 ).run();
 
 module.exports = db;
