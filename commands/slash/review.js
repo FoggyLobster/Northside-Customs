@@ -1,6 +1,16 @@
 const { SlashCommandBuilder } = require("discord.js");
 const db = require("../../db");
 
+function generateReviewId() {
+  let id;
+
+  do {
+    id = Math.floor(10000 + Math.random() * 90000);
+  } while (db.prepare("SELECT 1 FROM reviews WHERE id = ?").get(id));
+
+  return id;
+}
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("review")
@@ -39,7 +49,7 @@ module.exports = {
 
     .addSubcommand((subcommand) =>
       subcommand
-        .setName("view")
+        .setName("list")
         .setDescription("View a user's reviews.")
         .addUserOption((option) =>
           option
@@ -51,7 +61,7 @@ module.exports = {
 
     .addSubcommand((subcommand) =>
       subcommand
-        .setName("remove")
+        .setName("delete")
         .setDescription("Remove a review from a user.")
         .addUserOption((option) =>
           option
@@ -65,6 +75,18 @@ module.exports = {
             .setDescription("The ID of the review to remove.")
             .setRequired(true),
         ),
+    )
+
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("info")
+        .setDescription("View information about a review.")
+        .addIntegerOption((option) =>
+          option
+            .setName("review_id")
+            .setDescription("The ID of the review to view.")
+            .setRequired(true),
+        ),
     ),
 
   async execute(interaction) {
@@ -74,12 +96,14 @@ module.exports = {
       const reviewedUser = interaction.options.getUser("user");
       const rating = interaction.options.getInteger("rating");
       const review = interaction.options.getString("review");
+      const reviewId = generateReviewId();
 
       db.prepare(
         `INSERT INTO reviews
-        (user, user_id, given_by, given_by_id, review, rating, timestamp)
-        VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        (id, user, user_id, given_by, given_by_id, review, rating, timestamp)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       ).run(
+        reviewId,
         reviewedUser.username,
         reviewedUser.id,
         interaction.user.username,
@@ -90,23 +114,32 @@ module.exports = {
       );
 
       await interaction.reply({
-        content: `Successfully added a ${rating}/5 review for ${reviewedUser.username}.`,
+        content: `Successfully added a ${rating}/5 review for ${reviewedUser}.`,
         ephemeral: true,
       });
 
-      await interaction.guild.channels.cache.get(1520788052379959376).send({
-        embeds: [
-          {
-            color: 0x2b2d31,
-            title: `New Review from ${interaction.user.username}`,
-            description: `**User:** ${reviewedUser.username}\n**Rating:** ${rating}/5\n**Review:** ${review}`,
-            timestamp: new Date(),
-          },
-        ],
-      });
+      const channel = await interaction.guild.channels.fetch(
+        "1520788052379959376",
+      );
+
+      if (channel?.isTextBased()) {
+        await channel.send({
+          embeds: [
+            {
+              color: 0x2b2d31,
+              title: ` `,
+              description: `### New review from ${interaction.user}\n\n**User:** ${reviewedUser}\n**Rating:** \`${rating}/5\`\n**Review:** ${review}`,
+              timestamp: new Date(),
+              footer: {
+                text: `ID: ${reviewId}`,
+              },
+            },
+          ],
+        });
+      }
     }
 
-    if (subcommand === "view") {
+    if (subcommand === "list") {
       const reviewedUser = interaction.options.getUser("user");
 
       const reviews = db
@@ -152,10 +185,11 @@ module.exports = {
             ],
           },
         ],
+        ephemeral: true,
       });
     }
 
-    if (subcommand === "remove") {
+    if (subcommand === "delete") {
       const reviewedUser = interaction.options.getUser("user");
       const reviewId = interaction.options.getInteger("review_id");
 
@@ -173,7 +207,34 @@ module.exports = {
       db.prepare("DELETE FROM reviews WHERE id = ?").run(reviewId);
 
       return interaction.reply({
-        content: `Removed review #${reviewId} from ${reviewedUser.username}.`,
+        content: `Removed review #${reviewId} from ${reviewedUser}.`,
+        ephemeral: true,
+      });
+    }
+
+    if (subcommand === "info") {
+      const reviewId = interaction.options.getInteger("review_id");
+
+      const review = db
+        .prepare("SELECT * FROM reviews WHERE id = ?")
+        .get(reviewId);
+
+      if (!review) {
+        return interaction.reply({
+          content: "No review with that ID exists.",
+          ephemeral: true,
+        });
+      }
+
+      return interaction.reply({
+        embeds: [
+          {
+            color: 0x2b2d31,
+            title: `Review #${reviewId}`,
+            description: `**User:** ${review.user}\n**Rating:** ${review.rating}/5\n**Review:** ${review.review}`,
+            timestamp: new Date(review.timestamp),
+          },
+        ],
         ephemeral: true,
       });
     }
