@@ -131,7 +131,7 @@ module.exports = {
               components: [
                 {
                   type: 10,
-                  content: `# <:ClipBoard:1521521831880818909> Order Log\n**Designer:** ${interaction.user}\n**Customer:** ${customer}\n**Order:** ${orderType}\n**Payout:** <:robux:1521266814397714492> \`${payout}\`R$`,
+                  content: `# <:ClipBoard:1521521831880818909> Order Log\n**Designer:** ${interaction.user}\n**Customer:** ${customer}\n**Order:** ${orderType}\n**Payout:** <:robux:1521266814397714492> \`${payout}\`R$\n\n-# Order ID: ${orderId}`,
                 },
                 {
                   type: 14,

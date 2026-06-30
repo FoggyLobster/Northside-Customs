@@ -40,4 +40,19 @@ db.prepare(
 `,
 ).run();
 
+db.prepare(
+  `
+  CREATE TABLE IF NOT EXISTS infractions (
+    id INTEGER PRIMARY KEY,
+    issuer TEXT NOT NULL,
+    issuer_id TEXT NOT NULL,
+    user TEXT NOT NULL,
+    user_id TEXT NOT NULL,
+    infraction_reason TEXT NOT NULL,
+    infraction_type TEXT NOT NULL,
+    timestamp INTEGER NOT NULL
+  )
+`,
+).run();
+
 module.exports = db;
