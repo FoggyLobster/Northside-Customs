@@ -1,10 +1,5 @@
-const {
-  SlashCommandBuilder,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder } = require("discord.js");
+const db = require("../../db");
 
 function generateId(length = 6) {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -77,6 +72,15 @@ module.exports = {
     const subcommand = interaction.options.getSubcommand();
 
     if (subcommand === "log") {
+      const hasRole = interaction.member.roles.cache.has("1520836300461183169");
+      const isAdmin = interaction.memmber.permissions.has("Administrator");
+
+      if (!isAdmin && !hasRole) {
+        return;
+      }
+
+      await interaction.deferReply({ ephemeral: true });
+
       const customer = interaction.options.getUser("customer");
       const orderType = interaction.options.getString("type");
       const payout = interaction.options.getString("payout");
@@ -85,7 +89,7 @@ module.exports = {
 
       db.prepare(
         `INSERT INTO order_logs
-          (id, designer, designer_id, customer, customer_id, order, timestamp, payout)
+          (id, designer, designer_id, customer, customer_id, order_type, timestamp, payout)
           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       ).run(
         orderId,
@@ -98,9 +102,8 @@ module.exports = {
         payout,
       );
 
-      await interaction.reply({
+      await interaction.editReply({
         content: `Successfully made an order log. View it in https://discord.com/channels/1520779863064055848/1520789676326125608.`,
-        ephemeral: true,
       });
 
       const channel = await interaction.guild.channels.fetch(
@@ -109,15 +112,31 @@ module.exports = {
 
       if (channel?.isTextBased()) {
         await channel.send({
-          embeds: [
+          flags: 32768,
+          components: [
             {
-              color: 0x2b2d31,
-              title: ` `,
-              description: `# <:ClipBoard:1521521831880818909># Order Log\n\n**Designer:** ${interaction.user}\n**Customer:** ${customer}\n**Order:** ${orderType}\n**Payout:** <:robux:1521266814397714492> \`${payout}\`R$`,
-              timestamp: new Date(),
-              footer: {
-                text: `ID: ${orderId}`,
-              },
+              type: 17,
+              components: [
+                {
+                  type: 10,
+                  content: `# <:ClipBoard:1521521831880818909> Order Log\n**Designer:** ${interaction.user}\n**Customer:** ${customer}\n**Order:** ${orderType}\n**Payout:** <:robux:1521266814397714492> \`${payout}\`R$`,
+                },
+                {
+                  type: 14,
+                  spacing: 2,
+                },
+                {
+                  type: 12,
+                  items: [
+                    {
+                      media: {
+                        url: "https://cdn.discordapp.com/attachments/1518405789503721592/1521534653222097016/image.png?ex=6a452f12&is=6a43dd92&hm=eb0c892bdc23ae40c5e895fcd12b351a770d0c846a87b0b73122554877295d0b&",
+                      },
+                    },
+                  ],
+                },
+              ],
+              accent_color: 1513240,
             },
           ],
         });
@@ -125,6 +144,13 @@ module.exports = {
     }
 
     if (subcommand === "info") {
+      const hasRole = interaction.member.roles.cache.has("1520836300461183169");
+      const isAdmin = interaction.memmber.permissions.has("Administrator");
+
+      if (!isAdmin && !hasRole) {
+        return;
+      }
+
       const orderId = interaction.options.getString("id");
 
       const order = db
