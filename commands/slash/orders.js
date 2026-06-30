@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const db = require("../../db");
 
 function generateId(length = 6) {
@@ -66,6 +66,18 @@ module.exports = {
             .setDescription("The ID of the order to view.")
             .setRequired(true),
         ),
+    )
+
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("clear")
+        .setDescription("Clear an order log.")
+        .addStringOption((option) =>
+          option
+            .setName("id")
+            .setDescription("The ID of the order to clear.")
+            .setRequired(true),
+        ),
     ),
 
   async execute(interaction) {
@@ -73,7 +85,7 @@ module.exports = {
 
     if (subcommand === "log") {
       const hasRole = interaction.member.roles.cache.has("1520836300461183169");
-      const isAdmin = interaction.memmber.permissions.has("Administrator");
+      const isAdmin = interaction.member.permissions.has("Administrator");
 
       if (!isAdmin && !hasRole) {
         return;
@@ -145,7 +157,7 @@ module.exports = {
 
     if (subcommand === "info") {
       const hasRole = interaction.member.roles.cache.has("1520836300461183169");
-      const isAdmin = interaction.memmber.permissions.has("Administrator");
+      const isAdmin = interaction.member.permissions.has("Administrator");
 
       if (!isAdmin && !hasRole) {
         return;
@@ -173,6 +185,17 @@ module.exports = {
             timestamp: new Date(order.timestamp),
           },
         ],
+        ephemeral: true,
+      });
+    }
+
+    if (subcommand === "clear") {
+      const orderId = interaction.options.getString("id");
+
+      db.prepare("DELETE FROM order_logs WHERE id = ?").run(orderId);
+
+      return interaction.reply({
+        content: `Successfully cleared order #${orderId}.`,
         ephemeral: true,
       });
     }
