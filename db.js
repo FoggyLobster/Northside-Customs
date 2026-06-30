@@ -8,11 +8,12 @@ if (!fs.existsSync(dataPath)) {
   fs.mkdirSync(dataPath);
 }
 
-const db = new Database(path.join(dataPath, "reviews.sqlite"));
+const db = new Database(path.join(dataPath, "database.sqlite"));
 
 db.prepare(
-  `CREATE TABLE IF NOT EXISTS reviews (
-    id INTEGER PRIMARY KEY,
+  `
+  CREATE TABLE IF NOT EXISTS reviews (
+    id TEXT PRIMARY KEY,
     user TEXT NOT NULL,
     user_id TEXT NOT NULL,
     given_by TEXT NOT NULL,
@@ -20,20 +21,23 @@ db.prepare(
     review TEXT NOT NULL,
     rating INTEGER NOT NULL,
     timestamp INTEGER NOT NULL
-);`,
+  )
+`,
 ).run();
 
 db.prepare(
-  `CREATE TABLE IF NOT EXISTS order_logs (
-  id TEXT PRIMARY KEY,
-  designer TEXT NOT NULL,
-  designer_id TEXT NOT NULL,
-  customer TEXT NOT NULL,
-  customer_id TEXT NOT NULL,
-  order TEXT NOT NULL,
-  timestamp INTEGER NOT NULL
-  payout INTEGER NOT NULL,
-  );`,
+  `
+  CREATE TABLE IF NOT EXISTS order_logs (
+    id TEXT PRIMARY KEY,
+    designer TEXT NOT NULL,
+    designer_id TEXT NOT NULL,
+    customer TEXT NOT NULL,
+    customer_id TEXT NOT NULL,
+    order_type TEXT NOT NULL,
+    payout INTEGER NOT NULL,
+    timestamp INTEGER NOT NULL
+  )
+`,
 ).run();
 
 module.exports = db;
