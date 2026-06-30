@@ -65,7 +65,11 @@ module.exports = {
       content: `Created ticket channel: ${ticketChannel}`,
     });
 
-    const ticketType = selected.charAt(0).toUpperCase() + selected.slice(1);
+    if (selected === "general_support") {
+      ticketType = "General Support";
+    } else if (selected === "high_rank") {
+      ticketType = "High Rank Support";
+    }
 
     const ticketOwner = interaction.user;
     const ticketOwnerID = interaction.user.id;

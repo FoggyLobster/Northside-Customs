@@ -94,10 +94,7 @@ module.exports = {
         ephemeral: true,
       });
 
-      const reviewChannel =
-        interaction.guild.channels.cache.get(1520788052379959376);
-
-      await reviewChannel.send({
+      await interaction.guild.channels.cache.get(1520788052379959376).send({
         embeds: [
           {
             color: 0x2b2d31,
