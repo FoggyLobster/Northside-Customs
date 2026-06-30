@@ -98,14 +98,24 @@ module.exports = {
       const infractionId = generateId();
 
       db.prepare(
-        `INSERT INTO infractions
-          (id, issuer, issuer_id, user, user_id, infraction_reason, infraction_type, timestamp)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        `
+            INSERT INTO infractions (
+                id,
+                issuer,
+                issuer_id,
+                user,
+                user_id,
+                infraction_reason,
+                infraction_type,
+                timestamp
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `,
       ).run(
         infractionId,
-        issuer.username,
+        issuer.tag ?? issuer.username,
         issuer.id,
-        user.username,
+        user.tag ?? user.username,
         user.id,
         reason,
         infractionType,
@@ -204,6 +214,8 @@ You have been issued an infraction in **Northside Customs.** Details can be foun
       }
 
       if (subcommand === "list") {
+        await interaction.deferReply({ ephemeral: true });
+
         const infractions = db
           .prepare("SELECT * FROM infractions ORDER BY timestamp DESC")
           .all();
@@ -223,7 +235,7 @@ You have been issued an infraction in **Northside Customs.** Details can be foun
           )
           .join("\n\n");
 
-        return interaction.reply({
+        return interaction.editReply({
           embeds: [
             {
               color: 0x2b2d31,
