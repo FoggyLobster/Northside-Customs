@@ -41,9 +41,9 @@ module.exports = {
             .setDescription("The customer.")
             .setRequired(true),
         )
-        .addBooleanOption((option) =>
+        .addStringOption((option) =>
           option
-            .setName("order_type")
+            .setName("type")
             .setDescription("The type of order.")
             .setRequired(true)
             .addChoices(
@@ -78,7 +78,7 @@ module.exports = {
 
     if (subcommand === "log") {
       const customer = interaction.options.getUser("customer");
-      const orderType = interaction.options.getString("order_type");
+      const orderType = interaction.options.getString("type");
       const payout = interaction.options.getString("payout");
 
       const orderId = generateOrderId();
