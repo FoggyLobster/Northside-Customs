@@ -63,12 +63,6 @@ module.exports = {
       subcommand
         .setName("void")
         .setDescription("Remove an infraction from a user.")
-        .addUserOption((option) =>
-          option
-            .setName("user")
-            .setDescription("The user to remove an infraction from.")
-            .setRequired(true),
-        )
         .addIntegerOption((option) =>
           option
             .setName("id")
@@ -170,10 +164,6 @@ module.exports = {
           flags: 32768,
           components: [
             {
-              type: 10,
-              content: "",
-            },
-            {
               type: 17,
               components: [
                 {
@@ -213,62 +203,67 @@ You have been issued an infraction in **Northside Customs.** Details can be foun
         console.error("Failed to DM user:", err);
       }
 
-      if (subcommand === "list") {
-        await interaction.deferReply({ ephemeral: true });
+      return;
+    }
 
-        const infractions = db
-          .prepare("SELECT * FROM infractions ORDER BY timestamp DESC")
-          .all();
+    if (subcommand === "list") {
+      await interaction.deferReply({ ephemeral: true });
 
-        if (!infractions.length) {
-          return interaction.reply({
-            content: "No infractions have been issued.",
-            ephemeral: true,
-          });
-        }
+      const infractions = db
+        .prepare("SELECT * FROM infractions ORDER BY timestamp DESC")
+        .all();
 
-        const infractionList = infractions
-          .slice(0, 10)
-          .map(
-            (i) =>
-              `**ID:** \`${i.id}\`\n**Issuer:** <@${i.issuer_id}>\n**Staff Member:** <@${i.user_id}>\n**Type:** ${i.infraction_reason}\n**Reason:** ${i.reason}`,
-          )
-          .join("\n\n");
+        const user = interaction.options.getUser("user");
 
+      if (!infractions.length) {
         return interaction.editReply({
-          embeds: [
-            {
-              color: 0x2b2d31,
-              title: `Infractions`,
-              description: infractionList,
-            },
-          ],
+          content: `No infractions could be found for ${user}`,
           ephemeral: true,
         });
       }
 
-      if (subcommand === "void") {
-        const infractionId = interaction.options.getInteger("id");
-        const issuer = interaction.user;
+      const infractionList = infractions
+        .slice(0, 10)
+        .map(
+          (i) =>
+            `**ID:** \`${i.id}\`\n**Issuer:** <@${i.issuer_id}>\n**Staff Member:** <@${i.user_id}>\n**Type:** ${i.infraction_type}\n**Reason:** ${i.infraction_reason}`,
+        )
+        .join("\n\n");
 
-        const infraction = db
-          .prepare("SELECT * FROM infractions WHERE id = ?")
-          .get(infractionId);
+      return interaction.editReply({
+        embeds: [
+          {
+            color: 0x2b2d31,
+            title: `Infractions`,
+            description: infractionList,
+          },
+        ],
+        ephemeral: true,
+      });
+    }
 
-        if (!infraction) {
-          return interaction.reply({
-            content: "No infraction with that ID exists.",
-            ephemeral: true,
-          });
-        }
+    if (subcommand === "void") {
+      await interaction.deferReply({ ephemeral: true });
 
-        db.prepare("DELETE FROM infractions WHERE id = ?").run(infractionId);
+      const infractionId = interaction.options.getInteger("id");
 
-        return interaction.reply({
-          content: `Successfully voided infraction #${infractionId}.`,
+      const infraction = db
+        .prepare("SELECT * FROM infractions WHERE id = ?")
+        .get(infractionId);
+
+      if (!infraction) {
+        return interaction.editReply({
+          content: "No infraction with that ID exists.",
           ephemeral: true,
         });
       }
+
+      db.prepare("DELETE FROM infractions WHERE id = ?").run(infractionId);
+
+      return interaction.editReply({
+        content: `Successfully voided infraction #${infractionId}.`,
+        ephemeral: true,
+      });
     }
   },
 };
