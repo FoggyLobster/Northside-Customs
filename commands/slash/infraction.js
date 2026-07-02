@@ -270,7 +270,7 @@ You have been issued an infraction in **Northside Customs.** Details can be foun
       }
 
       await voidedUser.send({
-        content: `The infraction with ID #${infractionId} has been voided by ${interaction.user}. If you have any quewsetions please reach out to a management member.`,
+        content: `The infraction with ID #${infractionId} has been voided by ${interaction.user}. If you have any questions please reach out to a management member.`,
       });
 
       db.prepare("DELETE FROM infractions WHERE id = ?").run(infractionId);
