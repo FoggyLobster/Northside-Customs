@@ -213,7 +213,7 @@ You have been issued an infraction in **Northside Customs.** Details can be foun
         .prepare("SELECT * FROM infractions ORDER BY timestamp DESC")
         .all();
 
-        const user = interaction.options.getUser("user");
+      const user = interaction.options.getUser("user");
 
       if (!infractions.length) {
         return interaction.editReply({
@@ -247,16 +247,31 @@ You have been issued an infraction in **Northside Customs.** Details can be foun
 
       const infractionId = interaction.options.getInteger("id");
 
-      const infraction = db
+      const infracted = db
         .prepare("SELECT * FROM infractions WHERE id = ?")
         .get(infractionId);
 
-      if (!infraction) {
+      if (!infracted) {
         return interaction.editReply({
-          content: "No infraction with that ID exists.",
+          content: `No infraction found with ID #${infractionId}.`,
           ephemeral: true,
         });
       }
+
+      const voidedUser = await interaction.client.users.fetch(
+        infracted.user_id,
+      );
+
+      if (!voidedUser) {
+        return interaction.editReply({
+          content: `No user found with ID #${infracted.user_id}.`,
+          ephemeral: true,
+        });
+      }
+
+      await voidedUser.send({
+        content: `The infraction with ID #${infractionId} has been voided by ${interaction.user}. If you have any quewsetions please reach out to a management member.`,
+      });
 
       db.prepare("DELETE FROM infractions WHERE id = ?").run(infractionId);
 
