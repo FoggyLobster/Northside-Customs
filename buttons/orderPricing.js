@@ -1,5 +1,5 @@
 module.exports = {
-  name: "order_pricing",
+  customId: "order_pricing",
 
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
