@@ -20,7 +20,7 @@ const db = require("./db");
 
 client.db = db;
 
-client.prefix = ">";
+client.prefix = "$";
 
 require("./handlers/commandHandler")(client);
 require("./handlers/eventHandler")(client);
