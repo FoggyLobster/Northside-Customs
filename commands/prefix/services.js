@@ -26,7 +26,7 @@ module.exports = {
               items: [
                 {
                   media: {
-                    url: "https://media.discordapp.net/attachments/1520826464948322334/1521157487745699870/Screenshot_2026-06-28_125651.png?ex=6a43cfce&is=6a427e4e&hm=0d05cb4694e8b4eaef4ca013feb4bdd40966515d52f93c20c2a7ac85cf8f4156&=&format=webp&quality=lossless&width=747&height=121",
+                    url: "https://media.discordapp.net/attachments/1520826464948322334/1521157487745699870/Screenshot_2026-06-28_125651.png?ex=6a47c44e&is=6a4672ce&hm=4ce0c3b8927ad25158d83dc68f6af7bf36efd9ebb0996baa5f3725195a94ad47&format=webp&quality=lossless&width=747&height=121&",
                   },
                 },
               ],
@@ -38,7 +38,38 @@ module.exports = {
             {
               type: 10,
               content:
-                "**Northside Customs**\n### Pricing\nLooking to order? Look at the prices that fit you!\nPriced may vairy depending on the designers work level. Robux is the primary payment.\n### Livery Prices\n**1x LEO Livery: <:robux:1521266814397714492> 75 Robux**\n**1x DOT Livery: <:robux:1521266814397714492> 60 Robux**\n**1x Fire Livery: <:robux:1521266814397714492> 105 Robux**\n**1x MED Livery: <:robux:1521266814397714492> 75 Robux**",
+                "Looking to order from us? You're in the right place! But before doing so, make sure to look at our order TOS and our prices which can be found by pressing the buttons marked below! You can also place an order by using the select menu that can also be found below.",
+            },
+            {
+              type: 1,
+              components: [
+                {
+                  type: 3,
+                  options: [
+                    {
+                      label: "Livery ",
+                      value: "livery",
+                    },
+                    {
+                      label: "Uniform",
+                      value: "uniform",
+                    },
+                    {
+                      label: "Photography",
+                      value: "photography",
+                    },
+                    {
+                      label: "Graphics",
+                      value: "graphic",
+                    },
+                  ],
+                  placeholder: "Select an option to place an order",
+                  flows: {},
+                  custom_id: "order_menu",
+                  min_values: 1,
+                  max_values: 1,
+                },
+              ],
             },
             {
               type: 14,
@@ -48,20 +79,39 @@ module.exports = {
               type: 1,
               components: [
                 {
-                  type: 3,
-                  options: [
-                    { label: "Graphic Designs", value: "graphic" },
-                    { label: "Photography Designs", value: "photography" },
-                    { label: "Uniform Designs", value: "uniform" },
-                    { label: "Livery Designs", value: "livery" },
-                  ],
-                  placeholder: "Select a service to start an order",
-                  flows: {},
-                  custom_id: "order_menu",
-                  min_values: 1,
-                  max_values: 1,
+                  style: 4,
+                  type: 2,
+                  label: "Pricing",
+                  emoji: {
+                    name: "💲",
+                  },
+                  flow: {
+                    actions: [],
+                  },
+                  custom_id: "order_pricing",
+                },
+                {
+                  style: 3,
+                  type: 2,
+                  label: "Order TOS",
+                  emoji: {
+                    name: "📑",
+                  },
+                  flow: {
+                    actions: [],
+                  },
+                  custom_id: "order_tos",
                 },
               ],
+            },
+            {
+              type: 14,
+              spacing: 2,
+            },
+            {
+              type: 10,
+              content:
+                "-# All purchases are final. We do not do refunds of any kind nor will we every do them. Please do not ever ask for a refund.",
             },
           ],
         },
