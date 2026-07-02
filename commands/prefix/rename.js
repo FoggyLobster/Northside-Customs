@@ -7,8 +7,13 @@ module.exports = {
     const isAdmin = message.member.permissions.has(
       PermissionsBitField.Flags.Administrator,
     );
+    const hasRole = message.member.roles.cache.has([
+      "1520794786758660266",
+      "1520817120433406023",
+      "1520836300461183169",
+    ]);
 
-    if (!isAdmin) {
+    if (!isAdmin && !hasRole) {
       return;
     }
 
@@ -34,7 +39,7 @@ module.exports = {
     try {
       await message.channel.setName(newName);
 
-      return message.reply(`Renamed ${message.channel} to **${newName}**.`);
+      return message.reply(`Successfully renamed channel to ${newName}`);
     } catch (err) {
       console.error(err);
 
