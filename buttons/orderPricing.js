@@ -5,7 +5,7 @@ module.exports = {
     await interaction.deferReply({ ephemeral: true });
 
     await interaction.editReply({
-      flags: 32768 || 64,
+      flags: 32768,
       components: [
         {
           type: 14,
