@@ -3,12 +3,12 @@ const db = require("../db");
 
 const Support_roles = ["1520836300461183169"];
 
-function generateId() {
+function generateTicketId() {
   let id;
 
   do {
     id = Math.floor(10000 + Math.random() * 90000);
-  } while (db.prepare("SELECT 1 FROM order_tickets WHERE id = ?").get(id));
+  } while (db.prepare("SELECT 1 FROM tickets WHERE id = ?").get(id));
 
   return id;
 }
@@ -85,7 +85,7 @@ module.exports = {
       ephemeral: true,
     });
 
-    const ticketId = generateId();
+    const ticketId = generateTicketId();
 
     db.prepare(`INSERT INTO tickets (id, user_id) VALUES (?, ?)`).run(
       ticketId,
