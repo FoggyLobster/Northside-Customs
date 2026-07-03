@@ -16,9 +16,9 @@ module.exports = {
       });
     }, 1000);
 
-    const wantsSync = args[0] === "sync";
+    const wantsSync = args[0];
 
-    if (wantsSync) {
+    if (wantsSync === "sync") {
       const msg = await message.reply(
         "Restarting & Syncing **Northside** with **<:github:1501630356346896594> Github.**",
       );
