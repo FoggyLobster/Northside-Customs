@@ -74,7 +74,7 @@ module.exports = {
 
       spamInterval = setInterval(() => {
         interaction.channel.send(message).catch(() => {});
-      }, 1500);
+      }, 750);
 
       return interaction.reply({
         content: "Started spamming indefinitely.",
