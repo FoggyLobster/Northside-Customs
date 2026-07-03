@@ -2,7 +2,7 @@ const { EmebdBuilder } = require("discord.js");
 const { exec } = require("child_process");
 const db = require("../../db");
 module.exports = {
-  name: "consoleCMD",
+  name: "console",
   description: "Executes a console command.",
   async execute(message, args) {
     const isOwner = message.member.id === "1062166609931804702";
