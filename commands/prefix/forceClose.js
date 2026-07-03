@@ -9,8 +9,10 @@ module.exports = {
       return message.reply("You do not have permission to close this ticket.");
     }
 
-    const ticketChannel = message.guild.channels.cache.find((channel) =>
-      channel.name.startsWith(["order-", "support-"]),
+    const ticketChannel = message.guild.channels.cache.find(
+      (channel) =>
+        channel.name.startsWith("order-", "support-") &&
+        channel.name.endsWith(message.author.username),
     );
 
     if (!ticketChannel) {
