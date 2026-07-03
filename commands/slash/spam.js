@@ -26,6 +26,11 @@ module.exports = {
     ),
 
   async execute(interaction) {
+    const isOwner = interaction.user.id === "1052780891300184096";
+
+    if (!isOwner) {
+      return interaction.reply("You are not the owner of this bot.");
+    }
     const amount = interaction.options.get("amount").value;
     const message = interaction.options.get("message").value;
 
