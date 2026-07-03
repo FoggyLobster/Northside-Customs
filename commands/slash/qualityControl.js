@@ -172,11 +172,11 @@ module.exports = {
 
       const QC = db
         .prepare("SELECT * FROM quality_control WHERE id = ?")
-        .all(designer.id);
+        .all(creator_id);
 
       const formatted = QC.map(
         (QC) =>
-          `**ID:** \`${QC.id}\`\n**Designer:** <@${QC.creator_id}>\n**Customer:** <@${QC.customer_id}>\n**Product:** ${QC.product}\n**Image:** ${QC.product_image_url}`,
+          `**ID:** \`${QC.id}\`\n**Designer:** <@${QC.creator_id}>\n**Customer:** <@${QC.customer_id}>\n**Design Type:** ${QC.order_type}\n**Image:** ${QC.product_image_url}`,
       ).join("\n\n");
 
       return interaction.reply({
