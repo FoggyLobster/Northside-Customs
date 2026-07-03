@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
-  name: "recentErrors",
+  name: "errors",
   description: "Shows the last 10 errors that have occured in the server",
   async execute(message) {
     const errors = message.client.recentErrors;
