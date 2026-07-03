@@ -62,7 +62,7 @@ module.exports = {
               items: [
                 {
                   media: {
-                    url: `${productImage.url}`,
+                    url: productImage.url,
                   },
                 },
               ],
