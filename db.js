@@ -55,4 +55,19 @@ db.prepare(
 `,
 ).run();
 
+db.prepare(
+  `
+  CREATE TABLE IF NOT EXISTS quality_control (
+    id INTEGER PRIMARY KEY,
+    creator TEXT NOT NULL,
+    creator_id TEXT NOT NULL,
+    customer TEXT NOT NULL,
+    customer_id TEXT NOT NULL,
+    product TEXT NOT NULL,
+    product_image_url TEXT NOT NULL,
+    timestamp INTEGER NOT NULL
+  )
+  `,
+).run();
+
 module.exports = db;
