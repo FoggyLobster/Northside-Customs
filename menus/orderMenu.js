@@ -8,7 +8,7 @@ function generateTicketId() {
 
   do {
     id = Math.floor(10000 + Math.random() * 90000);
-  } while (db.prepare("SELECT 1 FROM tickets_info WHERE id = ?").get(id));
+  } while (db.prepare("SELECT 1 FROM tickets WHERE id = ?").get(id));
 
   return id;
 }
@@ -90,7 +90,7 @@ module.exports = {
     const ticketId = generateTicketId();
 
     db.prepare(
-      `INSERT INTO tickets_info (id, user, user_id, timestamp) VALUES (?, ?, ?, ?)`,
+      `INSERT INTO tickets (id, user, user_id, timestamp) VALUES (?, ?, ?, ?)`,
     ).run(ticketId, interaction.user.username, interaction.user.id, Date.now());
 
     if (selected === "livery") {
