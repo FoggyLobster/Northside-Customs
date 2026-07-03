@@ -3,44 +3,45 @@ const db = require("../../db");
 module.exports = {
   name: "close",
   description: "Closes the ticket.",
+
   async execute(message) {
-    const hasRoles = message.member.roles.cache.has("1520836300461183169");
+    const hasRole = message.member.roles.cache.has("1520836300461183169");
     const isAdmin = message.member.permissions.has("Administrator");
 
-    if (!hasRoles && !isAdmin) {
+    if (!hasRole && !isAdmin) {
       return message.reply("You do not have permission to close this ticket.");
     }
 
-    const ticketChannel = message.guild.channels.cache.find(
-      (channel) =>
-        channel.name.startsWith("order-", "support-") &&
-        channel.name.endsWith(message.author.username),
-    );
+    const isTicketChannel =
+      message.channel.name.startsWith("order-") ||
+      message.channel.name.startsWith("support-");
 
-    if (!ticketChannel) {
+    if (!isTicketChannel) {
       return message.reply("This is not a ticket channel.");
     }
 
     const ticket = db
-      .prepare("SELECT * FROM tickets WHERE id = ?")
-      .get(ticketId);
+      .prepare("SELECT * FROM tickets WHERE channel_id = ?")
+      .get(message.channel.id);
 
     if (!ticket) {
       return message.reply("Ticket not found in the database.");
     }
 
-    const ticketOwner = await interaction.client.users.fetch(ticket.user_id);
+    const ticketId = ticket.id;
 
-    if (!ticketOwner) {
-      return message.reply("Ticket owner not found in the database.");
+    let ticketOwner;
+    try {
+      ticketOwner = await message.client.users.fetch(ticket.user_id);
+    } catch (err) {
+      return message.reply("Ticket owner could not be found.");
     }
 
-    message.reply("Closing the ticket...");
-    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    await message.reply("Closing the ticket...");
 
-    await sleep(5000);
+    await new Promise((resolve) => setTimeout(resolve, 5000));
 
-    await message.channel.delete();
+    await message.channel.delete().catch(() => {});
 
     await ticketOwner.send({
       flags: 32768,
@@ -59,7 +60,7 @@ module.exports = {
             },
             {
               type: 10,
-              content: `The ticket with the ID  **${ticketId}** has been closed in **<:Northside:1520847420874031104> Northside Customs.** Need further assistance? Create a support ticket! Our support team will always be here to help you with any questions you may have.`,
+              content: `The ticket with the ID **${ticketId}** has been closed in **Northside Customs.** Need further assistance? Create another support ticket anytime!`,
             },
             {
               type: 14,
@@ -70,7 +71,7 @@ module.exports = {
               items: [
                 {
                   media: {
-                    url: "https://cdn.discordapp.com/attachments/1520826464948322334/1521567358643339444/image.png?ex=6a489947&is=6a4747c7&hm=4688120a4c27ea95dbd599b3ab8f28047b0e27c66d16526a6f8a9b01374ce3d8&",
+                    url: "https://cdn.discordapp.com/attachments/1520826464948322334/1521567358643339444/image.png",
                   },
                 },
               ],
