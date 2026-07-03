@@ -43,94 +43,179 @@ module.exports = {
             .setDescription("The product image")
             .setRequired(true),
         ),
+    )
+
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("list")
+        .setDescription("View a user's quality control entries")
+        .addUserOption((option) =>
+          option
+            .setName("designer")
+            .setDescription("The designer")
+            .setRequired(true),
+        ),
+    )
+
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("void")
+        .setDescription("Remove a quality control entry")
+        .addIntegerOption((option) =>
+          option
+            .setName("id")
+            .setDescription("The ID of the quality control entry to remove")
+            .setRequired(true),
+        )
+        .addStringOption((option) =>
+          option
+            .setName("reason")
+            .setDescription("The reason for the void")
+            .setRequired(true),
+        ),
     ),
 
   async execute(interaction) {
-    const customer = interaction.options.getUser("customer");
-    const product = interaction.options.getString("order_type");
-    const productImage = interaction.options.getAttachment("product");
+    const subcommand = interaction.options.getSubcommand();
 
-    const QCId = generateId();
+    if (subcommand === "submit") {
+      const customer = interaction.options.getUser("customer");
+      const product = interaction.options.getString("order_type");
+      const productImage = interaction.options.getAttachment("product");
 
-    const channel = await interaction.guild.channels.fetch(
-      "1520789853925544067",
-    );
+      const QCId = generateId();
 
-    await channel.send({
-      flags: 32768,
-      components: [
-        {
-          type: 17,
-          components: [
-            {
-              type: 10,
-              content: `## <:ShieldWork:1522427022863765625> Quality Control Submission\n\n### Details can be found below:\n\n**Designer:** ${interaction.user}\n**Customer:** ${customer}\n**Design Type:** ${product}\n\n**An image can be found below if it was provided.**`,
-            },
-            {
-              type: 14,
-              spacing: 2,
-            },
-            {
-              type: 12,
-              items: [
-                {
-                  media: {
-                    url: productImage.url,
-                  },
-                },
-              ],
-            },
-            {
-              type: 14,
-              spacing: 2,
-            },
-            {
-              type: 12,
-              items: [
-                {
-                  media: {
-                    url: "https://cdn.discordapp.com/attachments/1520826464948322334/1521567358643339444/image.png?ex=6a47f087&is=6a469f07&hm=6fa6d4b3f17f6e758756955e1fd72dd76e10b9fb263e00bdcdd7ab2e34eb909f&",
-                  },
-                },
-              ],
-            },
-            {
-              type: 10,
-              content: `**ID:** \`${QCId}\``,
-            },
-          ],
-          accent_color: 1644825,
-        },
-      ],
-    });
-
-    await db
-      .prepare(
-        `INSERT INTO quality_control (
-        id,
-        creator,
-        creator_id,
-        customer,
-        customer_id,
-        product,
-        product_image_url,
-        timestamp
-      )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      )
-      .run(
-        QCId,
-        interaction.user.tag ?? interaction.user.username,
-        interaction.user.id,
-        customer.tag ?? customer.username,
-        customer.id,
-        product,
-        productImage.url,
-        Date.now(),
+      const channel = await interaction.guild.channels.fetch(
+        "1520789853925544067",
       );
 
-    return interaction.reply(
-      `Successfully submitted a quality control entry for ${customer}.`,
-    );
+      await channel.send({
+        flags: 32768,
+        components: [
+          {
+            type: 17,
+            components: [
+              {
+                type: 10,
+                content: `## <:ShieldWork:1522427022863765625> Quality Control Submission\n\n### Details can be found below:\n\n**Designer:** ${interaction.user}\n**Customer:** ${customer}\n**Design Type:** ${product}\n\n**An image can be found below if it was provided.**`,
+              },
+              {
+                type: 14,
+                spacing: 2,
+              },
+              {
+                type: 12,
+                items: [
+                  {
+                    media: {
+                      url: productImage.url,
+                    },
+                  },
+                ],
+              },
+              {
+                type: 14,
+                spacing: 2,
+              },
+              {
+                type: 12,
+                items: [
+                  {
+                    media: {
+                      url: "https://cdn.discordapp.com/attachments/1520826464948322334/1521567358643339444/image.png?ex=6a47f087&is=6a469f07&hm=6fa6d4b3f17f6e758756955e1fd72dd76e10b9fb263e00bdcdd7ab2e34eb909f&",
+                    },
+                  },
+                ],
+              },
+              {
+                type: 10,
+                content: `**ID:** \`${QCId}\``,
+              },
+            ],
+            accent_color: 1644825,
+          },
+        ],
+      });
+
+      await db
+        .prepare(
+          `INSERT INTO quality_control (
+                id,
+                creator,
+                creator_id,
+                customer,
+                customer_id,
+                product,
+                product_image_url,
+                timestamp
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        )
+        .run(
+          QCId,
+          interaction.user.tag ?? interaction.user.username,
+          interaction.user.id,
+          customer.tag ?? customer.username,
+          customer.id,
+          product,
+          productImage.url,
+          Date.now(),
+        );
+
+      return interaction.reply(
+        `Successfully submitted a quality control entry for ${customer}.`,
+      );
+    }
+
+    if (subcommand === "list") {
+      const designer = interaction.options.getUser("designer");
+
+      const QC = db
+        .prepare("SELECT * FROM quality_control WHERE id = ?")
+        .all(designer.id);
+
+      const formatted = QCs.map(
+        (QC) =>
+          `**ID:** \`${QC.id}\`\n**Designer:** <@${QC.creator_id}>\n**Customer:** <@${QC.customer_id}>\n**Product:** ${QC.product}\n**Image:** ${QC.product_image_url}`,
+      ).path.join("\n\n");
+
+      return interaction.reply({
+        embeds: [
+          {
+            color: 0x2b2d31,
+            title: `Quality Control Entries`,
+            description: formatted,
+          },
+        ],
+        ephemeral: true,
+      });
+    }
+
+    if (subcommand === "void") {
+      const QCId = interaction.options.getInteger("id");
+      const reason = interaction.options.getString("reason");
+
+      const voidedQC = db
+        .prepare("SELECT * FROM quality_control WHERE id = ?")
+        .get(QCId);
+
+      if (!voidedQC) {
+        return interaction.reply({
+          content: `No QC entry with ID #${QCId} exists.`,
+          ephemeral: true,
+        });
+      }
+
+      await voidedQC.creator_id.send({
+        content: `The QC Submission with ID #${QCId} has been voided for the following reason: ${reason}`,
+      });
+
+      db.prepare("DELETE FROM quality_control WHERE id = ?").run(QCId);
+
+      return interaction.reply({
+        content: `Successfully voided QC entry #${QCId}.`,
+        ephemeral: true,
+      });
+    }
   },
 };
