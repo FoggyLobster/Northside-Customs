@@ -17,20 +17,36 @@ module.exports = {
     }
 
     if (selected === "closeSelect") {
+      const isTicketChannel =
+        interaction.channel.name.startsWith("order-") ||
+        interaction.channel.name.startsWith("support-");
+
+      if (!isTicketChannel) {
+        return interaction.reply("This is not a ticket channel.");
+      }
+
       const ticket = db
-        .prepare("SELECT * FROM tickets WHERE id = ?")
-        .get(ticketId);
+        .prepare("SELECT * FROM tickets WHERE channel_id = ?")
+        .get(interaction.channel.id);
 
-      await interaction.reply(`Closing the ticket...`);
+      if (!ticket) {
+        return interaction.reply("Ticket not found in the database.");
+      }
 
-      const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+      const ticketId = ticket.id;
 
-      await sleep(5000);
+      let ticketOwner;
+      try {
+        ticketOwner = await interaction.client.users.fetch(ticket.user_id);
+      } catch (err) {
+        return interaction.reply("Ticket owner could not be found.");
+      }
+
+      await interaction.reply("Closing the ticket...");
+
+      await new Promise((resolve) => setTimeout(resolve, 5000));
 
       await interaction.channel.delete();
-
-      const ticketOwner = tickets.user_id;
-      const ticketId = tickets.id;
 
       await ticketOwner.send({
         flags: 32768,
@@ -49,7 +65,7 @@ module.exports = {
               },
               {
                 type: 10,
-                content: `The ticket with the ID  **${ticketId}** has been closed in **<:Northside:1520847420874031104> Northside Customs.** Need further assistance? Create a support ticket! Our support team will always be here to help you with any questions you may have.`,
+                content: `The ticket with the ID **${ticketId}** has been closed in **Northside Customs.** Need further assistance? Create another support ticket anytime!`,
               },
               {
                 type: 14,
@@ -60,7 +76,7 @@ module.exports = {
                 items: [
                   {
                     media: {
-                      url: "https://cdn.discordapp.com/attachments/1520826464948322334/1521567358643339444/image.png?ex=6a489947&is=6a4747c7&hm=4688120a4c27ea95dbd599b3ab8f28047b0e27c66d16526a6f8a9b01374ce3d8&",
+                      url: "https://cdn.discordapp.com/attachments/1520826464948322334/1521567358643339444/image.png",
                     },
                   },
                 ],

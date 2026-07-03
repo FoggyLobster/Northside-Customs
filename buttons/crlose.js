@@ -33,6 +33,8 @@ module.exports = {
 
     await new Promise((resolve) => setTimeout(resolve, 5000));
 
+    await interaction.channel.delete();
+
     await ticketOwner.send({
       flags: 32768,
       components: [
