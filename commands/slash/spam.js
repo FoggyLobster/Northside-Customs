@@ -16,11 +16,11 @@ module.exports = {
         .setDescription("The amount of messages to spam")
         .setRequired(true)
         .addChoices(
-          { name: "5", value: "1" },
-          { name: "10", value: "2" },
-          { name: "15", value: "3" },
-          { name: "20", value: "4" },
-          { name: "25", value: "5" },
+          { name: "5", value: "5" },
+          { name: "10", value: "10" },
+          { name: "15", value: "15" },
+          { name: "20", value: "20" },
+          { name: "25", value: "25" },
           { name: "Indefinite", value: "6" },
         ),
     ),
