@@ -22,8 +22,8 @@ module.exports = {
 
     if (selected === "closeSelect") {
       const isTicketChannel =
-        interaction.channel.name.startsWith("order-") ||
-        interaction.channel.name.startsWith("support-");
+        interaction.channel.parent.name === "Support" ||
+        interaction.channel.parent.name === "Orders";
 
       if (!isTicketChannel) {
         return interaction.reply("This is not a ticket channel.");
