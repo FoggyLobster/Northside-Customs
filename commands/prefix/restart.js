@@ -7,7 +7,7 @@ module.exports = {
     if (!message.member.permissions.has("Administrator")) return;
 
     const msg = await message.reply(
-      "Restarting & Syncing **Northside** with **<:github:1501630356346896594> Github.**",
+      "Restarting & Syncing **Northside** with **<:gittihub:1522693027989028884> Github.**",
     );
 
     setTimeout(() => {
@@ -19,7 +19,7 @@ module.exports = {
     }, 1000);
 
     msg.edit(
-      "Restarted & Synced **Northside** with **<:github:1501630356346896594> Github.**",
+      "Restarted & Synced **Northside** with **<:gittihub:1522693027989028884> Github.**",
     );
   },
 };
