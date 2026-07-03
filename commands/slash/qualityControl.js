@@ -162,9 +162,10 @@ module.exports = {
           Date.now(),
         );
 
-      return interaction.reply(
-        `Successfully submitted a quality control entry for ${customer}.`,
-      );
+      return interaction.reply({
+        content: `Successfully submitted a quality control entry for ${customer}.`,
+        ephemeral: true,
+      });
     }
 
     if (subcommand === "list") {
@@ -172,7 +173,7 @@ module.exports = {
 
       const QC = db
         .prepare("SELECT * FROM quality_control WHERE id = ?")
-        .all(creator.id);
+        .all(creator_id);
 
       const formatted = QC.map(
         (QC) =>
