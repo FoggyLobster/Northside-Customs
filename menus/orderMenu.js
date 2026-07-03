@@ -3,6 +3,16 @@ const db = require("../db");
 
 const Support_roles = ["1520836300461183169"];
 
+function generateId() {
+  let id;
+
+  do {
+    id = Math.floor(10000 + Math.random() * 90000);
+  } while (db.prepare("SELECT 1 FROM order_tickets WHERE id = ?").get(id));
+
+  return id;
+}
+
 module.exports = {
   customId: "order_menu",
 
@@ -75,9 +85,12 @@ module.exports = {
       ephemeral: true,
     });
 
-    db.prepare(
-      `INSERT INTO order_tickets (user_id, opened_at) VALUES (?, ?)`,
-    ).run(interaction.user.id, Date.now());
+    const ticketId = generateId();
+
+    db.prepare(`INSERT INTO order_tickets (id, user_id) VALUES (?, ?)`).run(
+      ticketId,
+      interaction.user.id,
+    );
 
     if (selected === "livery") {
       Type = "<@&1521157913396383764>";
