@@ -1,3 +1,5 @@
+const db = require("../../db");
+
 module.exports = {
   name: "close",
   description: "Closes the ticket.",
