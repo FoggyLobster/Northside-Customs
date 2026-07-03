@@ -16,6 +16,10 @@ module.exports = {
       await interaction.reply(`${interaction.user} has claimed the ticket.`);
     }
 
+    if (selected === "unclaim") {
+      await interaction.reply(`${interaction.user} has unclaimed the ticket.`);
+    }
+
     if (selected === "closeSelect") {
       const isTicketChannel =
         interaction.channel.name.startsWith("order-") ||

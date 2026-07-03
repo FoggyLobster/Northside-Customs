@@ -159,6 +159,11 @@ module.exports = {
                       description: "Claim this ticket",
                     },
                     {
+                      label: "Unclaim",
+                      value: "unclaim",
+                      description: "Unclaim this ticket",
+                    },
+                    {
                       label: "Close this ticket",
                       value: "closeSelect",
                       description: "Close this ticket",

@@ -151,6 +151,11 @@ Please remain patient. If you have not received a response within 12 hours, you 
                       description: "Claim the current ticket",
                     },
                     {
+                      label: "Unclaim Ticket",
+                      value: "unclaim",
+                      description: "Unclaim the current ticket",
+                    },
+                    {
                       label: "Close Ticket",
                       value: "closeSelect",
                       description: "Close the current ticket",
