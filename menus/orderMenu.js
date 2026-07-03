@@ -3,12 +3,13 @@ const db = require("../db");
 
 const Support_roles = ["1520836300461183169"];
 
-function generateTicketId() {
-  let id;
+function generateTicketId(length = 6) {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let id = "";
 
-  do {
-    id = Math.floor(10000 + Math.random() * 90000);
-  } while (db.prepare("SELECT 1 FROM tickets WHERE id = ?").get(id));
+  for (let i = 0; i < length; i++) {
+    id += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
 
   return id;
 }
