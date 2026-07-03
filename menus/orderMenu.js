@@ -89,11 +89,11 @@ module.exports = {
 
     const ticketId = generateTicketId();
 
+    console.log(db.prepare("PRAGMA table_info(tickets)").all());
+
     db.prepare(
       `INSERT INTO tickets (id, user, user_id, timestamp) VALUES (?, ?, ?, ?)`,
     ).run(ticketId, interaction.user.username, interaction.user.id, Date.now());
-
-    console.log(db.prepare("PRAGMA table_info(tickets)").all());
 
     if (selected === "livery") {
       Type = "<@&1521157913396383764>";
