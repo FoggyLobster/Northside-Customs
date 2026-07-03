@@ -177,7 +177,7 @@ module.exports = {
       const formatted = QC.map(
         (QC) =>
           `**ID:** \`${QC.id}\`\n**Designer:** <@${QC.creator_id}>\n**Customer:** <@${QC.customer_id}>\n**Product:** ${QC.product}\n**Image:** ${QC.product_image_url}`,
-      ).path.join("\n\n");
+      ).join("\n\n");
 
       return interaction.reply({
         embeds: [
