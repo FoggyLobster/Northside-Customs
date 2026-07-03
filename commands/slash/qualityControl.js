@@ -16,7 +16,7 @@ module.exports = {
         )
         .addStringOption((option) =>
           option
-            .setName("product")
+            .setName("order_type")
             .setDescription("The product")
             .setRequired(true)
             .addChoices(
@@ -36,12 +36,10 @@ module.exports = {
 
   async execute(interaction) {
     const customer = interaction.options.getUser("customer");
-    const product = interaction.options.getString("product");
+    const product = interaction.options.getString("order_type");
     const productImage = interaction.options.getAttachment("product");
 
-    const channel = interaction.guild.channels.cache.fetch(
-      "1520789853925544067",
-    );
+    const channel = interaction.guild.channels.fetch("1520789853925544067");
 
     await channel.send({
       flags: 32768,
