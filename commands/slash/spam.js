@@ -35,7 +35,7 @@ module.exports = {
     const message = interaction.options.get("message").value;
 
     if (amount === "6") {
-      Amount = Indefinitely;
+      Amount = "Indefinitely";
     }
 
     await interaction.reply(`Spamming ${amount} messages...`, {
