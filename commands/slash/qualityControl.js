@@ -172,7 +172,7 @@ module.exports = {
 
       const QC = db
         .prepare("SELECT * FROM quality_control WHERE id = ?")
-        .all(creator_id);
+        .all(creator.id);
 
       const formatted = QC.map(
         (QC) =>
