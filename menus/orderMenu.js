@@ -87,7 +87,7 @@ module.exports = {
 
     const ticketId = generateId();
 
-    db.prepare(`INSERT INTO order_tickets (id, user_id) VALUES (?, ?)`).run(
+    db.prepare(`INSERT INTO tickets (id, user_id) VALUES (?, ?)`).run(
       ticketId,
       interaction.user.id,
     );
