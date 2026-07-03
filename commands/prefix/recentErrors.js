@@ -22,7 +22,7 @@ module.exports = {
         }
 
         const embed = new EmbedBuilder()
-          .setTitle("Recent PM2 Errors")
+          .setTitle("Recent Errors")
           .setColor(0xff0000)
           .setDescription("```" + output.substring(0, 4000) + "```");
 
