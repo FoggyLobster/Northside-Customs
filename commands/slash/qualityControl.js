@@ -80,7 +80,7 @@ module.exports = {
 
     if (subcommand === "submit") {
       const customer = interaction.options.getUser("customer");
-      const product = interaction.options.getString("order_type");
+      const order_type = interaction.options.getString("order_type");
       const productImage = interaction.options.getAttachment("product");
 
       const QCId = generateId();
@@ -97,7 +97,7 @@ module.exports = {
             components: [
               {
                 type: 10,
-                content: `## <:ShieldWork:1522427022863765625> Quality Control Submission\n\n### Details can be found below:\n\n**Designer:** ${interaction.user}\n**Customer:** ${customer}\n**Design Type:** ${product}\n\n**An image can be found below if it was provided.**`,
+                content: `## <:ShieldWork:1522427022863765625> Quality Control Submission\n\n### Details can be found below:\n\n**Designer:** ${interaction.user}\n**Customer:** ${customer}\n**Design Type:** ${order_type}\n\n**An image can be found below if it was provided.**`,
               },
               {
                 type: 14,
@@ -157,7 +157,7 @@ module.exports = {
           interaction.user.id,
           customer.tag ?? customer.username,
           customer.id,
-          product,
+          order_type,
           productImage.url,
           Date.now(),
         );
