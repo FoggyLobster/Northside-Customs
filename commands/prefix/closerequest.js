@@ -7,6 +7,7 @@ const {
   ButtonStyle,
   MessageFlags,
 } = require("discord.js");
+const db = require("../../db");
 
 module.exports = {
   name: "closerequest",
@@ -19,15 +20,15 @@ module.exports = {
 
     await message.delete().catch(() => {});
 
-    // channel name: orderType-username
-    const [, username] = message.channel.name.split("-");
+    const ticket = db
+      .prepare("SELECT * FROM tickets WHERE channel_id = ?")
+      .get(message.channel.id);
 
-    // Find member by username (best-effort match)
-    const member = message.guild.members.cache.find(
-      (m) => m.user.username.toLowerCase() === username.toLowerCase(),
-    );
+    if (!ticket) {
+      return message.reply("Ticket not found in the database.");
+    }
 
-    const userMention = member ? `<@${member.id}>` : `@${username}`;
+    const userMention = `<@${ticket.user_id}>`;
 
     const container = new ContainerBuilder()
       .addTextDisplayComponents(
