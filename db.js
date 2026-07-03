@@ -72,7 +72,7 @@ db.prepare(
 
 db.prepare(
   `
-  CREATE TABLE IF NOT EXISTS tickets (
+  CREATE TABLE IF NOT EXISTS tickets_info (
     id TEXT PRIMARY KEY,
     user TEXT NOT NULL,
     user_id TEXT NOT NULL,
