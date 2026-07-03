@@ -17,6 +17,8 @@ module.exports = {
   customId: "order_menu",
 
   async execute(interaction) {
+    await interaction.deferReply({ ephemeral: true });
+
     const selected = interaction.values[0];
 
     const ticketCategory = interaction.guild.channels.cache.find(
@@ -39,7 +41,7 @@ module.exports = {
     );
 
     if (ticketExists) {
-      return interaction.reply({
+      return interaction.editReply({
         content: "A ticket already exists for this user.",
         ephemeral: true,
       });
@@ -80,7 +82,7 @@ module.exports = {
       ],
     });
 
-    await interaction.reply({
+    await interaction.editReply({
       content: `Created ticket channel: ${ticketChannel}`,
       ephemeral: true,
     });
