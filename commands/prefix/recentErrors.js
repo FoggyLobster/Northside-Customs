@@ -2,7 +2,7 @@ const { EmbedBuilder } = require("discord.js");
 const { exec } = require("child_process");
 
 module.exports = {
-  name: "errors",
+  name: "logs",
   description: "Shows the last 10 PM2 error log entries.",
 
   async execute(message) {
