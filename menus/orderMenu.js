@@ -1,5 +1,5 @@
 const { ChannelType, PermissionFlagsBits } = require("discord.js");
-const db = require("../../db");
+const db = require("../db");
 
 const Support_roles = ["1520836300461183169"];
 

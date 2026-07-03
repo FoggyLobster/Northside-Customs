@@ -1,4 +1,15 @@
 const { ChannelType, PermissionFlagsBits } = require("discord.js");
+const db = require("../db");
+
+function generateId() {
+  let id;
+
+  do {
+    id = Math.floor(10000 + Math.random() * 90000);
+  } while (db.prepare("SELECT 1 FROM tickets WHERE id = ?").get(id));
+
+  return id;
+}
 
 module.exports = {
   customId: "supportDesk",
@@ -64,6 +75,12 @@ module.exports = {
     await interaction.editReply({
       content: `Created ticket channel: ${ticketChannel}`,
     });
+
+    const ticketId = generateId();
+
+    db.prepare(
+      `INSERT INTO tickets (id, user_id, opened_at) VALUES (?, ?, ?)`,
+    ).run(ticketId, interaction.user.id, Date.now());
 
     if (selected === "general_support") {
       ticketType = "General Support";
