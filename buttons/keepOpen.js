@@ -47,8 +47,8 @@ module.exports = {
       flags: MessageFlags.IsComponentsV2,
     });
 
-    await interaction.reply(
-      `${interaction.user} has chosen to keep the ticket open.`,
-    );
+    await interaction.followUp({
+      content: `${interaction.user} has chosen to keep the ticket open.`,
+    });
   },
 };
