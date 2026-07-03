@@ -70,8 +70,6 @@ db.prepare(
   `,
 ).run();
 
-db.prepare("DROP TABLE IF EXISTS tickets").run();
-
 db.prepare(
   `
   CREATE TABLE IF NOT EXISTS tickets (
