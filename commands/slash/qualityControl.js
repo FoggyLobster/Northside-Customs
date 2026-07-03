@@ -172,8 +172,8 @@ module.exports = {
       const designer = interaction.options.getUser("designer");
 
       const QC = db
-        .prepare("SELECT * FROM quality_control WHERE id = ?")
-        .all(creator_id);
+        .prepare("SELECT * FROM quality_control ORDER BY timestamp DESC")
+        .all();
 
       const formatted = QC.map(
         (QC) =>
