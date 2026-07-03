@@ -35,10 +35,9 @@ module.exports = {
     ),
 
   async execute(interaction) {
-    const { options } = interaction;
-    const customer = options.getUser("customer");
-    const product = options.getString("product");
-    const productImage = options.getAttachment("product");
+    const customer = interaction.options.getUser("customer");
+    const product = interaction.options.getString("product");
+    const productImage = interaction.options.getAttachment("product");
 
     const channel = interaction.guild.channels.cache.fetch(
       "1520789853925544067",
@@ -52,8 +51,7 @@ module.exports = {
           components: [
             {
               type: 10,
-              content:
-                "## <:ShieldWork:1522427022863765625> Quality Control Submission\n\n### Details can be found below:\n\n**Designer:** ${interaction.user}\n**Customer:** ${customer}\n**Design Type:** ${product}\n\n**An image can be found below if it was provided.**",
+              content: `## <:ShieldWork:1522427022863765625> Quality Control Submission\n\n### Details can be found below:\n\n**Designer:** ${interaction.user}\n**Customer:** ${customer}\n**Design Type:** ${product}\n\n**An image can be found below if it was provided.**`,
             },
             {
               type: 14,
