@@ -10,7 +10,7 @@ module.exports = {
 
     if (!hasRole && !isAdmin) return;
 
-    const user_id = message.split(" ")[1];
+    const user_id = args[0];
 
     if (!user_id) {
       return message.reply("Please provide a user ID.");

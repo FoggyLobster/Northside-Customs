@@ -13,8 +13,8 @@ module.exports = {
     }
 
     const isTicketChannel =
-      message.channel.name.startsWith("order-") ||
-      message.channel.name.startsWith("support-");
+      message.channel.parent.name === "Support" ||
+      message.channel.parent.name === "Orders";
 
     if (!isTicketChannel) {
       return message.reply("This is not a ticket channel.");
