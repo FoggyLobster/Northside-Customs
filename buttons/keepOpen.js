@@ -12,6 +12,8 @@ module.exports = {
   customId: "keep_open",
 
   async execute(interaction) {
+    const userMention = `<@${interaction.user.id}>`;
+
     const container = new ContainerBuilder()
       .addTextDisplayComponents(
         new TextDisplayBuilder().setContent(`# Close Request\n${userMention}`),
