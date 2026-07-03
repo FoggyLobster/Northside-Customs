@@ -76,9 +76,6 @@ db.prepare(
     id TEXT PRIMARY KEY,
     user TEXT NOT NULL,
     user_id TEXT NOT NULL,
-    title TEXT NOT NULL,
-    opened_at INTEGER NOT NULL,
-    closed_at INTEGER NOT NULL,
     timestamp INTEGER NOT NULL
   )
   `,
