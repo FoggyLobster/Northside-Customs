@@ -28,6 +28,10 @@ require("./handlers/modalHandler")(client);
 require("./handlers/menuHandler")(client);
 require("./handlers/buttonHandler")(client);
 
-console.log(db.prepare("PRAGMA table_info(tickets)").all());
+try {
+  console.log(db.prepare("PRAGMA table_info(tickets)").all());
+} catch (err) {
+  console.error(err);
+}
 
 client.login(process.env.DISCORD_TOKEN);
