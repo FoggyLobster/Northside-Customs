@@ -20,7 +20,6 @@ module.exports = {
         if (!output) {
           return message.reply("No recent error logs found.");
         }
-        S;
         const embed = new EmbedBuilder()
           .setTitle("Recent Errors")
           .setColor(0xff0000)
