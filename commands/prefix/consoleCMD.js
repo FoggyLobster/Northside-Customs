@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const { exec } = require("child_process");
 
 module.exports = {
@@ -25,11 +25,13 @@ module.exports = {
         return message.reply("No output found.");
       }
 
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setTitle("Console Output")
         .setColor(0xff0000)
-        .setDescription("```" + output.substring(0, 4000) + "```");
-      message.channel.send({ embeds: [embed] });
+        .setDescription("```" + output.substring(0, 4000) + "```")
+        .setFooter({ text: "Console Command" });
+
+      await message.reply({ embeds: [embed] });
     });
   },
 };
