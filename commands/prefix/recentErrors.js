@@ -3,24 +3,24 @@ const { exec } = require("child_process");
 
 module.exports = {
   name: "logs",
-  description: "Shows the last 10 PM2 error log entries.",
+  description: "Shows the last 15 PM2 error log entries.",
 
   async execute(message) {
     exec(
-      "pm2 logs Northside --err --lines 10 --nostream",
+      "pm2 logs Northside --err --lines 15 --nostream",
       (error, stdout, stderr) => {
         if (error) {
           return message.reply(
-            `Failed to get PM2 logs:\n\`\`\`\n${error.message}\n\`\`\``,
+            `Failed to get logs:\n\`\`\`\n${error.message}\n\`\`\``,
           );
         }
 
         const output = (stdout || stderr).trim();
 
         if (!output) {
-          return message.reply("No recent PM2 error logs found.");
+          return message.reply("No recent error logs found.");
         }
-
+        S;
         const embed = new EmbedBuilder()
           .setTitle("Recent Errors")
           .setColor(0xff0000)
