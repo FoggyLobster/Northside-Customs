@@ -38,7 +38,7 @@ module.exports = {
         ),
       );
 
-    await interaction.message.edit({
+    await interaction.update({
       components: [container],
       flags: MessageFlags.IsComponentsV2,
     });
