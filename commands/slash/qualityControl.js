@@ -1,4 +1,15 @@
 const { SlashCommandBuilder } = require("discord.js");
+const db = require("../../db");
+
+function generateId() {
+  let id;
+
+  do {
+    id = Math.floor(10000 + Math.random() * 90000);
+  } while (db.prepare("SELECT 1 FROM quality_control WHERE id = ?").get(id));
+
+  return id;
+}
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -38,6 +49,8 @@ module.exports = {
     const customer = interaction.options.getUser("customer");
     const product = interaction.options.getString("order_type");
     const productImage = interaction.options.getAttachment("product");
+
+    const QCId = generateId();
 
     const channel = interaction.guild.channels.fetch("1520789853925544067");
 
@@ -79,10 +92,43 @@ module.exports = {
                 },
               ],
             },
+            {
+              type: 10,
+              content: `**ID:** \`${QCId}\``,
+            },
           ],
           accent_color: 1644825,
         },
       ],
     });
+
+    await db
+      .prepare(
+        `INSERT INTO quality_control (
+        id,
+        creator,
+        creator_id,
+        customer,
+        customer_id,
+        product,
+        product_image_url,
+        timestamp
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      )
+      .run(
+        QCId,
+        interaction.user.tag ?? interaction.user.username,
+        interaction.user.id,
+        customer.tag ?? customer.username,
+        customer.id,
+        product,
+        productImage.url,
+        Date.now(),
+      );
+
+    return interaction.reply(
+      `Successfully submitted a quality control entry for ${customer}.`,
+    );
   },
 };
