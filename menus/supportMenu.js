@@ -79,8 +79,8 @@ module.exports = {
     const ticketId = generateId();
 
     db.prepare(
-      `INSERT INTO tickets (id, user_id, opened_at) VALUES (?, ?, ?)`,
-    ).run(ticketId, interaction.user.id, Date.now());
+      `INSERT INTO tickets (id, user, user_id, opened_at) VALUES (?, ?, ?, ?)`,
+    ).run(ticketId, interaction.user.username, interaction.user.id, Date.now());
 
     if (selected === "general_support") {
       ticketType = "General Support";
