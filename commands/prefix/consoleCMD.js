@@ -31,7 +31,7 @@ module.exports = {
         .setDescription("```" + output.substring(0, 4000) + "```")
         .setFooter({ text: "Console Command" });
 
-      await message.reply({ embeds: [embed] });
+      message.reply({ embeds: [embed] });
     });
   },
 };
