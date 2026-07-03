@@ -70,9 +70,11 @@ db.prepare(
   `,
 ).run();
 
+db.prepare("DROP TABLE IF EXISTS tickets").run();
+
 db.prepare(
   `
-  CREATE TABLE IF NOT EXISTS tickets_info (
+  CREATE TABLE IF NOT EXISTS tickets (
     id TEXT PRIMARY KEY,
     user TEXT NOT NULL,
     user_id TEXT NOT NULL,
