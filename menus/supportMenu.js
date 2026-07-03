@@ -77,7 +77,7 @@ module.exports = {
       content: `Created ticket channel: ${ticketChannel}`,
     });
 
-    const ticketId = generateId();
+    const ticketId = generateTicketId();
 
     db.prepare(
       `INSERT INTO tickets (id, user, user_id, channel_id, timestamp) VALUES (?, ?, ?, ?, ?)`,
