@@ -47,8 +47,7 @@ module.exports = {
               },
               {
                 type: 10,
-                content:
-                  "The ticket with the ID  **${ticketId}** has been closed in **<:Northside:1520847420874031104> Northside Customs.** Need further assistance? Create a support ticket! Our support team will always be here to help you with any questions you may have.",
+                content: `The ticket with the ID  **${ticketId}** has been closed in **<:Northside:1520847420874031104> Northside Customs.** Need further assistance? Create a support ticket! Our support team will always be here to help you with any questions you may have.`,
               },
               {
                 type: 14,
