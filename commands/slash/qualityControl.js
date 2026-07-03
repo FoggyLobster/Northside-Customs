@@ -145,7 +145,7 @@ module.exports = {
                 creator_id,
                 customer,
                 customer_id,
-                product,
+                order_type,
                 product_image_url,
                 timestamp
             )

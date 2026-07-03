@@ -63,8 +63,22 @@ db.prepare(
     creator_id TEXT NOT NULL,
     customer TEXT NOT NULL,
     customer_id TEXT NOT NULL,
-    product TEXT NOT NULL,
+    order_type TEXT NOT NULL,
     product_image_url TEXT NOT NULL,
+    timestamp INTEGER NOT NULL
+  )
+  `,
+).run();
+
+db.prepare(
+  `
+  CREATE TABLE IF NOT EXISTS tickets (
+    id TEXT PRIMARY KEY,
+    user TEXT NOT NULL,
+    user_id TEXT NOT NULL,
+    title TEXT NOT NULL,
+    opened_at INTEGER NOT NULL,
+    closed_at INTEGER NOT NULL,
     timestamp INTEGER NOT NULL
   )
   `,

@@ -1,4 +1,5 @@
 const { ChannelType, PermissionFlagsBits } = require("discord.js");
+const db = require("../../db");
 
 const Support_roles = ["1520836300461183169"];
 
@@ -73,6 +74,10 @@ module.exports = {
       content: `Created ticket channel: ${ticketChannel}`,
       ephemeral: true,
     });
+
+    db.prepare(
+      `INSERT INTO order_tickets (user_id, opened_at) VALUES (?, ?)`,
+    ).run(interaction.user.id, Date.now());
 
     if (selected === "livery") {
       Type = "<@&1521157913396383764>";
