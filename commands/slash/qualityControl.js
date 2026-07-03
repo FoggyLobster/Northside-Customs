@@ -174,7 +174,7 @@ module.exports = {
         .prepare("SELECT * FROM quality_control WHERE id = ?")
         .all(designer.id);
 
-      const formatted = QCs.map(
+      const formatted = QC.map(
         (QC) =>
           `**ID:** \`${QC.id}\`\n**Designer:** <@${QC.creator_id}>\n**Customer:** <@${QC.customer_id}>\n**Product:** ${QC.product}\n**Image:** ${QC.product_image_url}`,
       ).path.join("\n\n");
