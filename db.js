@@ -76,6 +76,7 @@ db.prepare(
     id TEXT PRIMARY KEY,
     user TEXT NOT NULL,
     user_id TEXT NOT NULL,
+    channel_id TEXT NOT NULL,
     timestamp INTEGER NOT NULL
   )
   `,

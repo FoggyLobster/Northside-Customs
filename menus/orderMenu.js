@@ -90,8 +90,14 @@ module.exports = {
     const ticketId = generateTicketId();
 
     db.prepare(
-      `INSERT INTO tickets (id, user, user_id, timestamp) VALUES (?, ?, ?, ?)`,
-    ).run(ticketId, interaction.user.username, interaction.user.id, Date.now());
+      `INSERT INTO tickets (id, user, user_id, channel_id, timestamp) VALUES (?, ?, ?, ?, ?)`,
+    ).run(
+      ticketId,
+      interaction.user.username,
+      interaction.user.id,
+      ticketChannel.id,
+      Date.now(),
+    );
 
     if (selected === "livery") {
       Type = "<@&1521157913396383764>";
