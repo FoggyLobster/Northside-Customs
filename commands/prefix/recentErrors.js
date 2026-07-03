@@ -12,8 +12,7 @@ module.exports = {
       return message.reply("You do not have permission to use this command.");
     }
 
-    const lastErrors = message.split(" ")[1];
-
+    const lastErrors = args[0];
     exec(
       `pm2 logs Northside --err --lines ${lastErrors} --nostream`,
       (error, stdout, stderr) => {
