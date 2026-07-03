@@ -19,7 +19,7 @@ module.exports = {
     if (selected === "closeSelect") {
       const ticket = db
         .prepare("SELECT * FROM tickets WHERE id = ?")
-        .all(ticketId);
+        .get(ticketId);
 
       await interaction.reply(`Closing the ticket...`);
 
