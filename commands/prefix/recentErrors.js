@@ -5,9 +5,17 @@ module.exports = {
   name: "logs",
   description: "Shows the last 15 PM2 error log entries.",
 
-  async execute(message) {
+  async execute(message, args) {
+    const isAdmin = message.member.permissions.has("Administrator");
+
+    if (!isAdmin) {
+      return message.reply("You do not have permission to use this command.");
+    }
+
+    const lastErrors = message.split(" ")[1];
+
     exec(
-      "pm2 logs Northside --err --lines 15 --nostream",
+      `pm2 logs Northside --err --lines ${lastErrors} --nostream`,
       (error, stdout, stderr) => {
         if (error) {
           return message.reply(
