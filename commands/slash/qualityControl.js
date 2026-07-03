@@ -52,7 +52,9 @@ module.exports = {
 
     const QCId = generateId();
 
-    const channel = interaction.guild.channels.fetch("1520789853925544067");
+    const channel = await interaction.guild.channels.fetch(
+      "1520789853925544067",
+    );
 
     await channel.send({
       flags: 32768,
