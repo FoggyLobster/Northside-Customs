@@ -5,35 +5,33 @@ module.exports = {
 
   async execute(interaction) {
     const isTicketChannel =
-      message.channel.name.startsWith("order-") ||
-      message.channel.name.startsWith("support-");
+      interaction.channel.name.startsWith("order-") ||
+      interaction.channel.name.startsWith("support-");
 
     if (!isTicketChannel) {
-      return message.reply("This is not a ticket channel.");
+      return interaction.reply("This is not a ticket channel.");
     }
 
     const ticket = db
       .prepare("SELECT * FROM tickets WHERE channel_id = ?")
-      .get(message.channel.id);
+      .get(interaction.channel.id);
 
     if (!ticket) {
-      return message.reply("Ticket not found in the database.");
+      return interaction.reply("Ticket not found in the database.");
     }
 
     const ticketId = ticket.id;
 
     let ticketOwner;
     try {
-      ticketOwner = await message.client.users.fetch(ticket.user_id);
+      ticketOwner = await interaction.client.users.fetch(ticket.user_id);
     } catch (err) {
-      return message.reply("Ticket owner could not be found.");
+      return interaction.reply("Ticket owner could not be found.");
     }
 
-    await message.reply("Closing the ticket...");
+    await interaction.reply("Closing the ticket...");
 
     await new Promise((resolve) => setTimeout(resolve, 5000));
-
-    await message.channel.delete().catch(() => {});
 
     await ticketOwner.send({
       flags: 32768,
