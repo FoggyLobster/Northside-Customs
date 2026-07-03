@@ -31,12 +31,14 @@ module.exports = {
           new ButtonBuilder()
             .setCustomId("crclose")
             .setLabel("Close")
-            .setStyle(ButtonStyle.Danger),
+            .setStyle(ButtonStyle.Danger)
+            .setDisabled(true),
 
           new ButtonBuilder()
             .setCustomId("keep_open")
             .setLabel("Keep Open")
-            .setStyle(ButtonStyle.Success),
+            .setStyle(ButtonStyle.Success)
+            .setDisabled(true),
         ),
       );
 
@@ -45,7 +47,7 @@ module.exports = {
       flags: MessageFlags.IsComponentsV2,
     });
 
-    return await interaction.reply(
+    await interaction.reply(
       `${interaction.user} has chosen to keep the ticket open.`,
     );
   },
