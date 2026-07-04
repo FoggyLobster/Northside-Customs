@@ -1,23 +1,37 @@
+const { EmbedBuilder } = require("discord.js");
+
 module.exports = {
   name: "status",
   description: "Check the status of the bot",
 
   async execute(message) {
     const isOwner = message.author.id === "1062166609931804702";
+    if (!isOwner) return;
 
-    if (!isOwner) {
-      return;
-    }
+    const start = Date.now();
 
-    const statusMessage = await message.channel.send("Loading...");
+    const embed = new EmbedBuilder()
+      .setColor("Yellow")
+      .setTitle("Bot Status")
+      .setDescription("```diff\n+ Loading status...\n```");
 
-    const responseTime =
-      statusMessage.createdTimestamp - message.createdTimestamp;
+    const statusMessage = await message.channel.send({
+      embeds: [embed],
+    });
 
-    await statusMessage.edit(`
-**Uptime:** ${Math.round(process.uptime())} seconds
-**Response time:** ${responseTime} milliseconds
-**Memory usage:** ${Math.round(process.memoryUsage().rss / 1024 / 1024)} MB
-`);
+    const responseTime = Date.now() - start;
+
+    embed
+      .setColor("Green")
+      .setTitle("Bot Status")
+      .setDescription(
+        `**Uptime:** ${Math.round(process.uptime())} seconds\n` +
+          `**Response time:** ${responseTime}ms\n` +
+          `**Memory usage:** ${Math.round(process.memoryUsage().rss / 1024 / 1024)} MB`,
+      );
+
+    await statusMessage.edit({
+      embeds: [embed],
+    });
   },
 };
