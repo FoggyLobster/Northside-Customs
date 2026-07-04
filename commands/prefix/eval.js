@@ -10,7 +10,7 @@ module.exports = {
       return;
     }
 
-    const responseTime1 = Date.now();
+    const startTime = Date.now();
 
     const embed = new EmbedBuilder()
       .setColor("Green")
@@ -18,6 +18,16 @@ module.exports = {
       .setDescription("```js\nEvaluating...\n```");
 
     const evalMessage = await message.channel.send({
+      embeds: [embed],
+    });
+
+    const responseTime = Date.now() - startTime;
+
+    embed.setFooter({
+      text: `Response time: ${responseTime}ms`,
+    });
+
+    await evalMessage.edit({
       embeds: [embed],
     });
 
@@ -41,29 +51,19 @@ module.exports = {
         evaled = evaled.slice(0, 1990) + "...";
       }
 
-      const responseTime = Date.now() - responseTime1;
-
       embed
         .setColor("Green")
         .setTitle("Evaluation Result")
-        .setDescription(`\`\`\`js\n${evaled}\n\`\`\``)
-        .setFooter({
-          text: `Response time: ${responseTime}ms`,
-        });
+        .setDescription(`\`\`\`js\n${evaled}\n\`\`\``);
 
       await evalMessage.edit({
         embeds: [embed],
       });
     } catch (err) {
-      const responseTime = Date.now() - responseTime1;
-
       embed
         .setColor("Red")
         .setTitle("Evaluation Error")
-        .setDescription(`\`\`\`js\n${err}\n\`\`\``)
-        .setFooter({
-          text: `Response time: ${responseTime}ms`,
-        });
+        .setDescription(`\`\`\`js\n${err}\n\`\`\``);
 
       await evalMessage.edit({
         embeds: [embed],
