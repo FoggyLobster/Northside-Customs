@@ -13,7 +13,7 @@ module.exports = {
           type: ActivityType.Watching,
         },
       ],
-      status: "idle",
+      status: "dnd",
     });
   },
 };
