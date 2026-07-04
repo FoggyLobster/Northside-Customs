@@ -9,25 +9,25 @@ module.exports = {
     if (message.author.id !== "1062166609931804702") {
       return;
     }
-
     const startTime = Date.now();
+
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    sleep(3);
+
+    const EndTime = Date.now();
+
+    const responseTime = EndTime - startTime;
 
     const embed = new EmbedBuilder()
       .setColor("Green")
       .setTitle("Evaluation Result")
-      .setDescription("```js\nEvaluating...\n```");
+      .setDescription("```js\nEvaluating...\n```")
+      .setFooter({
+        text: `Response time: ${responseTime}ms`,
+      });
 
     const evalMessage = await message.channel.send({
-      embeds: [embed],
-    });
-
-    const responseTime = Date.now() - startTime;
-
-    embed.setFooter({
-      text: `Response time: ${responseTime}ms`,
-    });
-
-    await evalMessage.edit({
       embeds: [embed],
     });
 
