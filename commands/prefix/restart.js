@@ -19,7 +19,8 @@ module.exports = {
     }, 1000);
 
     msg.edit(
-      "Restarted & Synced **Northside** with **<:gittihub:1522693027989028884> Github.**",
+      "~~Restarting & Syncing **Northside** with **<:gittihub:1522693027989028884> Github.**~~\n" +
+        "Restarted & Synced **Northside** with **<:gittihub:1522693027989028884> Github.**",
     );
   },
 };
