@@ -24,18 +24,6 @@ module.exports = {
           text: `Requested by ${message.author.username}`,
         });
       message.reply({ embeds: [embed] });
-    } else if (!meber_id) {
-      const embed = new EmbedBuilder()
-        .setColor("Green")
-        .setTitle("Member Info")
-        .setDescription(
-          `**Username:** ${message.member.user}\n**ID:** ${member.user.id}\n**Joined Server:** ${member.joinedAt}\n**Created At:** ${member.user.createdAt}\n**Roles:** ${member.roles.cache.map((role) => role.name).join(", ")}`,
-        )
-        .setTimestamp()
-        .setFooter({
-          text: `Requested by ${message.author.username}`,
-        });
-      message.reply({ embeds: [embed] });
     } else {
       const embed = new EmbedBuilder()
         .setColor("Green")
@@ -43,10 +31,8 @@ module.exports = {
         .setDescription(
           `**User:** ${member.user}\n**ID:** ${member.user.id}\n**Joined Server:** ${member.joinedAt}\n**Created At:** ${member.user.createdAt}\n**Roles:** ${member.roles.cache.map((role) => role.name).join(", ")}`,
         )
-        .setTimestamp()
-        .setFooter({
-          text: `Requested by ${message.author.username}`,
-        });
+        .setTimestamp();
+
       message.reply({ embeds: [embed] });
     }
   },
