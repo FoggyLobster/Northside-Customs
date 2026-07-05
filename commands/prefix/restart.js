@@ -4,7 +4,7 @@ module.exports = {
   name: "restart",
 
   async execute(message) {
-    if (!message.member.permissions.has("Administrator")) return;
+    const isOwner = message.member.id === "1062166609931804702";
 
     const msg = await message.reply(
       "Restarting & Syncing **Northside** with **<:gittihub:1522693027989028884> Github.**",
