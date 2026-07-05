@@ -17,7 +17,7 @@ module.exports = {
         .setColor("Green")
         .setTitle("Member Info")
         .setDescription(
-          `**User:** ${member.user}\n**ID:** ${message.author.id}\n**Joined Server:** ${member.joinedAt}\n**Created At:** ${member.user.createdAt}\n**Roles:** ${member.roles.cache.map((role) => role.name).join(", ")}`,
+          `**User:** ${message.author}\n**ID:** ${message.author.id}\n**Joined Server:** ${member.joinedAt}\n**Created At:** ${member.user.createdAt}\n**Roles:** ${member.roles.cache.map((role) => role.name).join(", ")}`,
         )
         .setTimestamp();
       message.reply({ embeds: [embed] });
@@ -26,7 +26,7 @@ module.exports = {
         .setColor("Green")
         .setTitle("Member Info")
         .setDescription(
-          `**User:** ${member.user}\n**ID:** ${member.user.id}\n**Joined Server:** ${member.joinedAt}\n**Created At:** ${member.user.createdAt}\n**Roles:** ${member.roles.cache.map((role) => role.name).join(", ")}`,
+          `**User:** ${member}\n**ID:** ${member_id}\n**Joined Server:** ${member.joinedAt}\n**Created At:** ${member.user.createdAt}\n**Roles:** ${member.roles.cache.map((role) => role.name).join(", ")}`,
         )
         .setTimestamp();
       message.reply({ embeds: [embed] });
