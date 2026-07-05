@@ -62,6 +62,14 @@ module.exports = {
                       label: "Graphics",
                       value: "graphic",
                     },
+                    {
+                      label: "Discord Services",
+                      value: "discord",
+                    },
+                    {
+                      label: "Discord Bot",
+                      value: "bot",
+                    },
                   ],
                   placeholder: "Select an option to place an order",
                   flows: {},

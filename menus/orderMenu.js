@@ -108,9 +108,17 @@ module.exports = {
       Type = "<@&1521157924771201185>";
     } else if (selected === "graphic") {
       Type = "<@&1521157927291846808>";
+    } else if (selected === "discord") {
+      Type = "<@&1523377158590955530>";
+    } else if (selected === "bot") {
+      Type = "<@&1523377105625284748>";
     }
 
     const type = selected.charAt(0).toUpperCase() + selected.slice(1);
+
+    if (type === "discord") {
+      type = "Discord Service";
+    }
 
     await ticketChannel.send({
       flags: 32768,
