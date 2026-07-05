@@ -22,6 +22,14 @@ module.exports = {
       return message.reply("User not found.");
     }
 
+    const isTicketChannel =
+      message.channel.parent.name === "Support" ||
+      message.channel.parent.name === "Orders";
+
+    if (!isTicketChannel) {
+      return message.reply("This is not a ticket channel.");
+    }
+
     await message.channel.permissionOverwrites.edit(user.id, {
       ViewChannel: false,
       SendMessages: false,
