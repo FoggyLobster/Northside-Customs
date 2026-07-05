@@ -19,10 +19,7 @@ module.exports = {
         .setDescription(
           `**User:** ${member.user}\n**ID:** ${member.user.id}\n**Joined Server:** ${member.joinedAt}\n**Created At:** ${member.user.createdAt}\n**Roles:** ${member.roles.cache.map((role) => role.name).join(", ")}`,
         )
-        .setTimestamp()
-        .setFooter({
-          text: `Requested by ${message.author.username}`,
-        });
+        .setTimestamp();
       message.reply({ embeds: [embed] });
     } else {
       const embed = new EmbedBuilder()
@@ -32,7 +29,6 @@ module.exports = {
           `**User:** ${member.user}\n**ID:** ${member.user.id}\n**Joined Server:** ${member.joinedAt}\n**Created At:** ${member.user.createdAt}\n**Roles:** ${member.roles.cache.map((role) => role.name).join(", ")}`,
         )
         .setTimestamp();
-
       message.reply({ embeds: [embed] });
     }
   },
