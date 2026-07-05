@@ -6,35 +6,69 @@ module.exports = {
   description: "Evaluate JavaScript code",
 
   async execute(message, args) {
-    if (message.author.id !== "1062166609931804702") {
-      return;
-    }
+    if (message.author.id !== "1062166609931804702") return;
+
+    const code = args.join(" ");
+
+    let evalMessage = null;
+    let embed = null;
+    let firstSend = true;
+
+    const originalSend = message.channel.send.bind(message.channel);
+
+    // Hook channel.send
+    message.channel.send = async (...sendArgs) => {
+      // First send from the eval
+      if (firstSend) {
+        firstSend = false;
+
+        // Send the user's first message
+        const sent = await originalSend(...sendArgs);
+
+        // Measure how long it took
+        const responseTime = Date.now() - startTime;
+
+        // Create the eval embed
+        embed = new EmbedBuilder()
+          .setColor("Green")
+          .setTitle("Evaluation Result")
+          .setDescription("```js\nEvaluating...\n```")
+          .setFooter({
+            text: `Response time: ${responseTime}ms`,
+          });
+
+        evalMessage = await originalSend({
+          embeds: [embed],
+        });
+
+        return sent;
+      }
+
+      // Every other send behaves normally
+      return originalSend(...sendArgs);
+    };
+
     const startTime = Date.now();
 
-    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-    sleep(3);
-
-    const EndTime = Date.now();
-
-    const responseTime = EndTime - startTime;
-
-    const embed = new EmbedBuilder()
-      .setColor("Green")
-      .setTitle("Evaluation Result")
-      .setDescription("```js\nEvaluating...\n```")
-      .setFooter({
-        text: `Response time: ${responseTime}ms`,
-      });
-
-    const evalMessage = await message.channel.send({
-      embeds: [embed],
-    });
-
     try {
-      const code = args.join(" ");
-
       let evaled = await eval(code);
+
+      if (!evalMessage) {
+        // Nothing was sent during eval, so create the embed now.
+        const responseTime = Date.now() - startTime;
+
+        embed = new EmbedBuilder()
+          .setColor("Green")
+          .setTitle("Evaluation Result")
+          .setDescription("```js\nEvaluating...\n```")
+          .setFooter({
+            text: `Response time: ${responseTime}ms`,
+          });
+
+        evalMessage = await originalSend({
+          embeds: [embed],
+        });
+      }
 
       if (typeof evaled !== "string") {
         evaled = util.inspect(evaled, {
@@ -60,14 +94,32 @@ module.exports = {
         embeds: [embed],
       });
     } catch (err) {
+      if (!evalMessage) {
+        const responseTime = Date.now() - startTime;
+
+        embed = new EmbedBuilder()
+          .setColor("Red")
+          .setTitle("Evaluation Error")
+          .setFooter({
+            text: `Response time: ${responseTime}ms`,
+          });
+
+        evalMessage = await originalSend({
+          embeds: [embed],
+        });
+      }
+
       embed
         .setColor("Red")
         .setTitle("Evaluation Error")
-        .setDescription(`\`\`\`js\n${err}\n\`\`\``);
+        .setDescription(`\`\`\`js\n${err.stack || err}\n\`\`\``);
 
       await evalMessage.edit({
         embeds: [embed],
       });
+    } finally {
+      // Always restore send()
+      message.channel.send = originalSend;
     }
   },
 };
