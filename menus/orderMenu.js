@@ -34,12 +34,11 @@ module.exports = {
       });
     }
 
-    const ticketExists = await interaction.guild.channels.cache.find(
-      (channel) =>
-        channel.type === ChannelType.GuildText &&
-        channel.name.startsWith("order-") &&
-        channel.name.endsWith(interaction.user.username),
-    );
+    const ticketExists = db
+      .prepare(
+        `SELECT * FROM tickets WHERE user = ? AND user_id = ? AND channel_id = ?`,
+      )
+      .get(interaction.user.username, interaction.user.id, ticketCategory.id);
 
     if (ticketExists) {
       return interaction.editReply({
