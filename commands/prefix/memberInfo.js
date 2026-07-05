@@ -5,31 +5,38 @@ module.exports = {
   description: "Get info about a member",
 
   async execute(message, args) {
-    const member_id = args[0];
-    const member = await message.guild.members.fetch(member_id);
+    let member;
 
-    if (!member) {
-      return message.reply("Member not found.");
+    try {
+      if (args[0]) {
+        const memberId = args[0].replace(/[<@!>]/g, "");
+        member = await message.guild.members.fetch(memberId);
+      } else {
+        member = message.member;
+      }
+    } catch {
+      return message.reply("❌ Member not found.");
     }
 
-    if (member_id === message.author.id) {
-      const embed = new EmbedBuilder()
-        .setColor("Green")
-        .setTitle("Member Info")
-        .setDescription(
-          `**User:** ${message.author}\n**ID:** ${message.author.id}\n**Joined Server:** ${member.joinedAt}\n**Created At:** ${member.user.createdAt}\n**Roles:** ${member.roles.cache.map((role) => role.name).join(", ")}`,
-        )
-        .setTimestamp();
-      message.reply({ embeds: [embed] });
-    } else {
-      const embed = new EmbedBuilder()
-        .setColor("Green")
-        .setTitle("Member Info")
-        .setDescription(
-          `**User:** <@${member_id}>\n**ID:** ${member_id}\n**Joined Server:** ${member.joinedAt}\n**Created At:** ${member.user.createdAt}\n**Roles:** ${member.roles.cache.map((role) => role.name).join(", ")}`,
-        )
-        .setTimestamp();
-      message.reply({ embeds: [embed] });
-    }
+    const roles =
+      member.roles.cache
+        .filter((role) => role.id !== message.guild.id)
+        .map((role) => role.toString())
+        .join(", ") || "None";
+
+    const embed = new EmbedBuilder()
+      .setColor("Green")
+      .setTitle("Member Info")
+      .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
+      .setDescription(
+        `**User:** ${member}
+**ID:** ${member.id}
+**Joined Server:** <t:${Math.floor(member.joinedTimestamp / 1000)}:F>
+**Created At:** <t:${Math.floor(member.user.createdTimestamp / 1000)}:F>
+**Roles:** ${roles}`,
+      )
+      .setTimestamp();
+
+    return message.reply({ embeds: [embed] });
   },
 };
