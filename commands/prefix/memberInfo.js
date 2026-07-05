@@ -15,7 +15,7 @@ module.exports = {
         member = message.member;
       }
     } catch {
-      return message.reply("❌ Member not found.");
+      return message.reply("Member not found.");
     }
 
     const roles =
