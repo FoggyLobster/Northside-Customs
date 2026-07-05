@@ -22,27 +22,12 @@ module.exports = {
       return message.reply("User not found.");
     }
 
-    permissionOverwrites = [
-      {
-        id: message.guild.roles.everyone.id,
-        deny: [PermissionFlagsBits.ViewChannel],
-      },
-      {
-        id: user.id,
-        allow: [
-          PermissionFlagsBits.ViewChannel,
-          PermissionFlagsBits.SendMessages,
-          PermissionFlagsBits.ReadMessageHistory,
-        ],
-      },
-      {
-        id: message.guild.members.me.id,
-        allow: [
-          PermissionFlagsBits.ViewChannel,
-          PermissionFlagsBits.SendMessages,
-          PermissionFlagsBits.ManageChannels,
-        ],
-      },
-    ];
+    await message.channel.permissionOverwrites.edit(user.id, {
+      ViewChannel: false,
+      SendMessages: false,
+      ReadMessageHistory: false,
+    });
+
+    return message.reply(`Removed ${user} from this ticket.`);
   },
 };

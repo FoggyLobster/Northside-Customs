@@ -1,4 +1,4 @@
-const { ChannelType, PermissionFlagsBits } = require("discord.js");
+const { PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
   name: "add",
@@ -10,39 +10,25 @@ module.exports = {
 
     if (!hasRole && !isAdmin) return;
 
-    const user_id = args[0];
+    const userId = args[0];
 
-    if (!user_id) {
+    if (!userId) {
       return message.reply("Please provide a user ID.");
     }
 
-    const user = await message.guild.members.fetch(user_id);
-
-    if (!user) {
+    let user;
+    try {
+      user = await message.guild.members.fetch(userId);
+    } catch {
       return message.reply("User not found.");
     }
 
-    permissionOverwrites = [
-      {
-        id: message.guild.roles.everyone.id,
-        deny: [PermissionFlagsBits.ViewChannel],
-      },
-      {
-        id: user.id,
-        allow: [
-          PermissionFlagsBits.ViewChannel,
-          PermissionFlagsBits.SendMessages,
-          PermissionFlagsBits.ReadMessageHistory,
-        ],
-      },
-      {
-        id: message.guild.members.me.id,
-        allow: [
-          PermissionFlagsBits.ViewChannel,
-          PermissionFlagsBits.SendMessages,
-          PermissionFlagsBits.ManageChannels,
-        ],
-      },
-    ];
+    await message.channel.permissionOverwrites.edit(user.id, {
+      ViewChannel: true,
+      SendMessages: true,
+      ReadMessageHistory: true,
+    });
+
+    return message.reply(`Added ${user} to this ticket.`);
   },
 };
