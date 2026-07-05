@@ -22,7 +22,7 @@ const db = require("./db");
 client.db = db;
 
 client.prefix = "$";
-client.loggingChannel = "1521991384532517064";
+client.loggingChannel = "1523439975645974619";
 
 require("./handlers/commandHandler")(client);
 require("./handlers/eventHandler")(client);
