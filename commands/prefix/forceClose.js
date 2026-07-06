@@ -4,7 +4,7 @@ module.exports = {
   name: "close",
   description: "Closes the ticket.",
 
-  async execute(message) {
+  async execute(client, message) {
     const hasRole = message.member.roles.cache.has("1520836300461183169");
     const isAdmin = message.member.permissions.has("Administrator");
 

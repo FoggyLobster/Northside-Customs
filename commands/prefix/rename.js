@@ -3,7 +3,7 @@ const { ChannelType, PermissionsBitField } = require("discord.js");
 module.exports = {
   name: "rename",
 
-  async execute(message) {
+  async execute(client, message) {
     const isAdmin = message.member.permissions.has(
       PermissionsBitField.Flags.Administrator,
     );

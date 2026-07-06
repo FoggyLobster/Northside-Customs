@@ -8,7 +8,7 @@ const {
 module.exports = {
   name: "services",
 
-  async execute(message) {
+  async execute(client, message) {
     const isAdmin = message.member.permissions.has("Administrator");
 
     if (!isAdmin) {

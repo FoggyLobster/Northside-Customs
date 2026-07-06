@@ -1,10 +1,19 @@
 const { EmbedBuilder } = require("discord.js");
 
+function formatUptime(uptime) {
+  const days = Math.floor(uptime / 86400);
+  const hours = Math.floor((uptime % 86400) / 3600);
+  const minutes = Math.floor(((uptime % 86400) % 3600) / 60);
+  const seconds = ((uptime % 86400) % 3600) % 60;
+
+  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
+
 module.exports = {
   name: "status",
   description: "Check the status of the bot",
 
-  async execute(message) {
+  async execute(client, message) {
     const isOwner = message.author.id === "1062166609931804702";
     if (!isOwner) return;
 
@@ -25,10 +34,13 @@ module.exports = {
       .setColor("Green")
       .setTitle("Bot Status")
       .setDescription(
-        `**Uptime:** ${Math.round(process.uptime())} seconds\n` +
+        `**Uptime:** ${formatUptime(process.uptime())}\n` +
           `**Response time:** ${responseTime}ms\n` +
           `**Memory usage:** ${Math.round(process.memoryUsage().rss / 1024 / 1024)} MB`,
-      );
+        `**CPU usage:** ${Math.round(process.cpuUsage().system / 1000)} %`,
+      )
+      .setTimestamp()
+      .setFooter({ text: `Response time: ${responseTime}ms` });
 
     await statusMessage.edit({
       embeds: [embed],

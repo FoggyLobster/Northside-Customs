@@ -4,7 +4,7 @@ module.exports = {
   name: "memberinfo",
   description: "Get info about a member",
 
-  async execute(message, args) {
+  async execute(client, message, args) {
     let member;
 
     try {
