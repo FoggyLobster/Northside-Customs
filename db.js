@@ -85,25 +85,25 @@ db.prepare(
 db.prepare(
   `
   CREATE TABLE IF NOT EXISTS credits (
-  user_id TEXT PRIMARY KEY,
-  credits INTEGER NOT NULL
+    user_id TEXT PRIMARY KEY,
+    credits INTEGER NOT NULL DEFAULT 0
   )
   `,
 ).run();
 
-db.prepare("DELETE TABLE credits_history").run();
+db.prepare(`DROP TABLE IF EXISTS credits_history`).run();
 
 db.prepare(
   `
   CREATE TABLE IF NOT EXISTS credits_history (
-  user_id TEXT PRIMARY KEY,
-  credits INTEGER NOT NULL,
-  given_at INTEGER NOT NULL
-  given_credits = TEXT NOT NULL
-  given_by TEXT NOT NULL,
-  taken_at INTEGER NOT NULL
-  taken_credits = TEXT NOT NULL
-  taken_by TEXT NOT NULL
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id TEXT NOT NULL,
+    credits_given INTEGER,
+    credits_taken INTEGER,
+    given_by TEXT,
+    taken_by TEXT,
+    given_at INTEGER,
+    taken_at INTEGER
   )
   `,
 ).run();
