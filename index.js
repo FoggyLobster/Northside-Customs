@@ -18,6 +18,8 @@ client.menus = new Collection();
 client.modals = new Collection();
 const db = require("./db");
 
+const messageTracker = new Map();
+
 client.db = db;
 
 client.prefix = "$";
