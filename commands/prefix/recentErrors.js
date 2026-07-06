@@ -5,7 +5,7 @@ module.exports = {
   name: "logs",
   description: "Shows the last 15 PM2 error log entries.",
 
-  async execute(client, message, args) {
+  async execute(message, args) {
     const isAdmin = message.member.permissions.has("Administrator");
 
     if (!isAdmin) {

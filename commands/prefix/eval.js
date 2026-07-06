@@ -5,7 +5,7 @@ module.exports = {
   name: "eval",
   description: "Evaluate JavaScript code",
 
-  async execute(client, message, args) {
+  async execute(message, args) {
     if (message.author.id !== "1062166609931804702") return;
 
     const code = args.join(" ");

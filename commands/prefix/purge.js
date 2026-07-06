@@ -1,7 +1,7 @@
 module.exports = {
   name: "purge",
   description: "Purge messages",
-  async execute(client, message, args) {
+  async execute(message, args) {
     const amount = parseInt(args[0]);
 
     if (isNaN(amount)) {

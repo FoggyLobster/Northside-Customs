@@ -4,7 +4,7 @@ const { exec } = require("child_process");
 module.exports = {
   name: "console",
   description: "Executes a console command.",
-  async execute(client, message, args) {
+  async execute(message, args) {
     const isOwner = message.member.id === "1062166609931804702";
     if (!isOwner) {
       return message.reply("You do not have permission to use this command.");

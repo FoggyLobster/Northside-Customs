@@ -13,7 +13,7 @@ module.exports = {
   name: "status",
   description: "Check the status of the bot",
 
-  async execute(client, message) {
+  async execute(message) {
     const isOwner = message.author.id === "1062166609931804702";
     if (!isOwner) return;
 

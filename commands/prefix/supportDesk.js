@@ -1,7 +1,7 @@
 module.exports = {
   name: "support",
   description: "Opens the support tickets desk.",
-  async execute(client, message) {
+  async execute(message) {
     const isAdmin = message.member.permissions.has("Administrator");
 
     if (!isAdmin) {
