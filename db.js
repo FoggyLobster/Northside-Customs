@@ -106,8 +106,6 @@ db.prepare(
   `,
 ).run();
 
-db.prepare(`DROP TABLE IF EXISTS message_xp`).run();
-
 db.prepare(
   `
 CREATE TABLE IF NOT EXISTS message_xp (
