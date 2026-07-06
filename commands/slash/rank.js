@@ -4,12 +4,9 @@ const db = require("../../db");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("rank")
-    .setDescription("View your or another user's rank")
+    .setDescription("View a user's rank")
     .addUserOption((opt) =>
-      opt
-        .setName("user")
-        .setDescription("User to check rank for")
-        .setRequired(false),
+      opt.setName("user").setDescription("User to check").setRequired(false),
     ),
 
   async execute(interaction) {
@@ -19,22 +16,17 @@ module.exports = {
       .prepare("SELECT * FROM message_xp WHERE user_id = ?")
       .get(user.id);
 
-    if (!data) {
-      return interaction.reply({
-        content: "This user has no XP yet.",
-        ephemeral: true,
-      });
-    }
+    // if no data → default
+    let xp = data?.xp || 0;
+    let level = data?.level || 0;
 
-    const xp = data.xp || 0;
-    const level = data.level || 0;
-
-    // simple XP needed formula
     const needed = (level + 1) * 100;
 
-    // progress bar
-    const percent = Math.floor((xp / needed) * 10);
-    const bar = "█".repeat(percent) + "░".repeat(10 - percent);
+    const progress = Math.min(xp / needed, 1);
+    const barLength = 10;
+    const filled = Math.round(progress * barLength);
+
+    const bar = "█".repeat(filled) + "░".repeat(barLength - filled);
 
     const embed = new EmbedBuilder()
       .setColor("Green")
@@ -42,8 +34,8 @@ module.exports = {
       .setThumbnail(user.displayAvatarURL())
       .addFields(
         { name: "Level", value: `${level}`, inline: true },
-        { name: "XP", value: `${xp} / ${needed}`, inline: true },
-        { name: "Progress", value: `${bar}` },
+        { name: "XP", value: `${xp}/${needed}`, inline: true },
+        { name: "Progress", value: bar },
       )
       .setFooter({ text: "Northside Customs" });
 

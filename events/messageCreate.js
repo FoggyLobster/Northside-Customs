@@ -16,5 +16,30 @@ module.exports = {
     } catch (err) {
       console.error(err);
     }
+
+    const row = db
+      .prepare("SELECT * FROM message_xp WHERE user_id = ?")
+      .get(message.author.id);
+
+    let xp = row?.xp || 0;
+    let level = row?.level || 0;
+
+    xp += 5; // XP per message
+
+    let needed = (level + 1) * 100;
+
+    if (xp >= needed) {
+      xp -= needed;
+      level++;
+    }
+
+    db.prepare(
+      `
+  INSERT INTO message_xp (user_id, xp, level)
+  VALUES (?, ?, ?)
+  ON CONFLICT(user_id)
+  DO UPDATE SET xp = ?, level = ?
+`,
+    ).run(message.author.id, xp, level, xp, level);
   },
 };
