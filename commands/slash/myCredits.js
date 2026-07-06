@@ -26,9 +26,7 @@ module.exports = {
       const viewCreditsEmbed = new EmbedBuilder()
         .setColor("Green")
         .setTitle("Credits")
-        .setDescription(
-          `The user **${interaction.user}** has **${credits.credits}** credits.`,
-        )
+        .setDescription(`You have **${credits.credits}** credits.`)
         .setFooter({ text: "Northside Customs" });
 
       return interaction.editReply({ embeds: [viewCreditsEmbed] });
