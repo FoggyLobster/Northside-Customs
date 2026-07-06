@@ -137,7 +137,11 @@ module.exports = {
         .prepare("SELECT * FROM credits ORDER BY credits DESC LIMIT 10")
         .all();
 
-      const yourPlace = topCredits.findIndex((u) => u.user_id === user.id);
+      const yourCredits = db
+        .prepare("SELECT * FROM credits WHERE user_id = ?")
+        .get(interaction.user.id).credits;
+
+      const yourPlace = topCredits.findIndex((u) => u.credits === yourCredits);
 
       const topCreditsEmbed = new EmbedBuilder()
         .setColor("Green")
