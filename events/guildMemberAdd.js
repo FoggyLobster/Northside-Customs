@@ -1,7 +1,7 @@
 module.exports = {
   name: "guildMemberAdd",
 
-  async execute(member) {
+  async execute(client, member) {
     console.log({
       joinedUser: member.user.tag,
       id: member.id,
