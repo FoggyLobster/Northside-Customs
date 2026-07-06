@@ -91,8 +91,6 @@ db.prepare(
   `,
 ).run();
 
-db.prepare(`DROP TABLE IF EXISTS credits_history`).run();
-
 db.prepare(
   `
   CREATE TABLE IF NOT EXISTS credits_history (
