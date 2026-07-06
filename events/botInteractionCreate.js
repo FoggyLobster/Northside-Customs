@@ -12,19 +12,30 @@ module.exports = {
       .setFooter({ text: "Northside Customs" })
       .setTimestamp();
 
-    // ================= CHAT COMMAND =================
     if (interaction.isChatInputCommand()) {
+      const subcommandGroup = interaction.options.getSubcommandGroup(false);
+      const subcommand = interaction.options.getSubcommand(false);
+
+      let fullCommand = `/${interaction.commandName}`;
+
+      if (subcommandGroup) {
+        fullCommand += ` ${subcommandGroup}`;
+      }
+
+      if (subcommand) {
+        fullCommand += ` ${subcommand}`;
+      }
+
       const embed = baseEmbed.setTitle("Chat Input Command").setDescription(
         `**User:** ${interaction.user}
 **ID:** ${interaction.user.id}
 **Channel:** ${interaction.channel}
-**Command:** /${interaction.commandName}`,
+**Command:** ${fullCommand}`,
       );
 
       return loggingChannel.send({ embeds: [embed] });
     }
 
-    // ================= BUTTON =================
     if (interaction.isButton()) {
       const embed = baseEmbed.setTitle("Button Interaction").setDescription(
         `**User:** ${interaction.user}
@@ -36,7 +47,6 @@ module.exports = {
       return loggingChannel.send({ embeds: [embed] });
     }
 
-    // ================= SELECT MENU =================
     if (interaction.isStringSelectMenu()) {
       const embed = baseEmbed
         .setTitle("Select Menu Interaction")
@@ -51,7 +61,6 @@ module.exports = {
       return loggingChannel.send({ embeds: [embed] });
     }
 
-    // ================= MODAL =================
     if (interaction.isModalSubmit()) {
       const embed = baseEmbed.setTitle("Modal Submit").setDescription(
         `**User:** ${interaction.user}
