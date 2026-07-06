@@ -54,18 +54,5 @@ module.exports = {
         });
       }
     }
-
-    if (interaction.isCommand()) {
-      const loggingChannel = client.channels.cache.get(client.loggingChannel);
-      if (loggingChannel) {
-        loggingChannel.send({
-          content: `**User:** ${interaction.user}
-**ID:** ${interaction.user.id}
-**Channel:** ${interaction.channel}
-**Command:** ${interaction.commandName}
-`,
-        });
-      }
-    }
   },
 };
