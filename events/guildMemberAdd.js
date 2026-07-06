@@ -3,7 +3,6 @@ module.exports = {
 
   async execute(member) {
     const channel = await member.guild.channels.fetch("1520788467351552190");
-    const memberCount = await member.guild.members.cache.size;
 
     if (channel?.isTextBased()) {
       await channel.send({
@@ -19,7 +18,7 @@ module.exports = {
               {
                 style: 2,
                 type: 2,
-                label: `${memberCount}`,
+                label: `${member.guild.memberCount}`,
                 emoji: {
                   id: "1520847420874031104",
                   name: "Northside",
