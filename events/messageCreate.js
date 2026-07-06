@@ -12,7 +12,7 @@ module.exports = {
     if (!cmd) return;
 
     try {
-      await cmd.execute(message, args);
+      await cmd.execute(client, message, args);
     } catch (err) {
       console.error(err);
     }
