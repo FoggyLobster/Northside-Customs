@@ -106,4 +106,15 @@ db.prepare(
   `,
 ).run();
 
+db.prepare(
+  `
+CREATE TABLE IF NOT EXISTS message_xp (
+  user_id TEXT PRIMARY KEY,
+  count INTEGER NOT NULL DEFAULT 0,
+  xp INTEGER NOT NULL DEFAULT 0,
+  level INTEGER NOT NULL DEFAULT 0
+)
+`,
+).run();
+
 module.exports = db;
