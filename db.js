@@ -82,4 +82,28 @@ db.prepare(
   `,
 ).run();
 
+db.prepare(
+  `
+  CREATE TABLE IF NOT EXISTS credits (
+  user_id TEXT PRIMARY KEY,
+  credits INTEGER NOT NULL
+  )
+  `,
+).run();
+
+db.prepare(
+  `
+  CREATE TABLE IF NOT EXISTS credits_history (
+  user_id TEXT PRIMARY KEY,
+  credits INTEGER NOT NULL,
+  given_at INTEGER NOT NULL
+  credits_given = TEXT NOT NULL
+  given_by TEXT NOT NULL,
+  taken_at INTEGER NOT NULL
+  credits_taken = TEXT NOT NULL
+  taken_by TEXT NOT NULL
+  )
+  `,
+).run();
+
 module.exports = db;
