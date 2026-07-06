@@ -2,7 +2,11 @@ module.exports = {
   name: "guildMemberAdd",
 
   async execute(member) {
-    console.log(`${member.user.username} joined the server.`);
+    console.log({
+      joinedUser: member.user.tag,
+      id: member.id,
+      bot: member.user.bot,
+    });
 
     const channel = await member.guild.channels.fetch("1520788467351552190");
 
