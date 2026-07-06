@@ -68,17 +68,16 @@ module.exports = {
     ),
 
   async execute(interaction) {
-    const isAdmin = interaction.member.permissions.has("Administrator");
-
-    if (!isAdmin) {
-      return interaction.reply(
-        "You do not have permission to use this command.",
-      );
-    }
-
     const subcommand = interaction.options.getSubcommand();
 
     if (subcommand === "give") {
+      const isAdmin = interaction.member.permissions.has("Administrator");
+      if (!isAdmin) {
+        return interaction.reply(
+          "You do not have permission to use this command.",
+        );
+      }
+
       await interaction.deferReply({ ephemeral: true });
 
       const user = interaction.options.getUser("user");
@@ -102,6 +101,13 @@ module.exports = {
     }
 
     if (subcommand === "remove") {
+      const isAdmin = interaction.member.permissions.has("Administrator");
+      if (!isAdmin) {
+        return interaction.reply(
+          "You do not have permission to use this command.",
+        );
+      }
+
       await interaction.deferReply({ ephemeral: true });
 
       const user = interaction.options.getUser("user");
@@ -125,17 +131,19 @@ module.exports = {
     }
 
     if (subcommand === "top") {
-      await interaction.deferReply({ ephemeral: true });
+      await interaction.deferReply();
 
       const topCredits = db
         .prepare("SELECT * FROM credits ORDER BY credits DESC LIMIT 10")
         .all();
 
+      const yourPlace = topCredits.findIndex((u) => u.user_id === user.id);
+
       const topCreditsEmbed = new EmbedBuilder()
         .setColor("Green")
         .setTitle("Top Credits")
         .setDescription("The top 10 users with the most credits in the server.")
-        .setFooter({ text: "Northside Customs" });
+        .setFooter({ text: `Your position: ${yourPlace}` });
 
       topCredits.forEach((user) => {
         topCreditsEmbed.addFields({
@@ -149,6 +157,13 @@ module.exports = {
     }
 
     if (subcommand === "view") {
+      const isAdmin = interaction.member.permissions.has("Administrator");
+      if (!isAdmin) {
+        return interaction.reply(
+          "You do not have permission to use this command.",
+        );
+      }
+
       await interaction.deferReply({ ephemeral: true });
 
       const user = interaction.options.getUser("user");
@@ -173,6 +188,13 @@ module.exports = {
     }
 
     if (subcommand === "history") {
+      const isAdmin = interaction.member.permissions.has("Administrator");
+      if (!isAdmin) {
+        return interaction.reply(
+          "You do not have permission to use this command.",
+        );
+      }
+
       await interaction.deferReply({ ephemeral: true });
 
       const user = interaction.options.getUser("user");
