@@ -152,7 +152,7 @@ module.exports = {
       topCredits.forEach((user) => {
         topCreditsEmbed.addFields({
           name: ` `,
-          value: `${i}. <@${user.user_id}>\n**Credits:** ${user.credits}`,
+          value: `<@${user.user_id}>\n**Credits:** ${user.credits}`,
           inline: false,
         });
       });
