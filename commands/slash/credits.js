@@ -147,13 +147,13 @@ module.exports = {
         .setColor("Green")
         .setTitle("Top Credits")
         .setDescription("The top 10 users with the most credits in the server.")
-        .setFooter({ text: `Your position: ${yourPlace}` });
+        .setFooter({ text: `Your position: ` + `${yourPlace + 1}` });
 
       topCredits.forEach((user) => {
         topCreditsEmbed.addFields({
-          name: `<@${user.user_id}>`,
-          value: `**Credits:** ${user.credits}`,
-          inline: true,
+          name: ` `,
+          value: `${i}. <@${user.user_id}>\n**Credits:** ${user.credits}`,
+          inline: false,
         });
       });
 
