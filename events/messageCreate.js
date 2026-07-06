@@ -18,6 +18,9 @@ module.exports = {
     }
 
     client.on("messageCreate", async (message) => {
+      const loggingChannel = client.channels.cache.get(
+        client.creditLoggingChannel,
+      );
       if (message.author.bot) return;
       if (!message.guild) return;
 
@@ -43,8 +46,16 @@ module.exports = {
     `,
         ).run(userId, REWARD, REWARD);
 
-        // optional log
-        console.log(`Gave ${REWARD} credits to ${message.author.tag}`);
+        await loggingChannel.send({
+          embeds: [
+            new EmbedBuilder()
+              .setColor("Green")
+              .setTitle("Credits Reward")
+              .setDescription(
+                `<@${userId}> has been rewarded with **${REWARD}** credits for sending **${X}** messages.`,
+              ),
+          ],
+        });
       }
 
       messageTracker.set(userId, data);

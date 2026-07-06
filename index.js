@@ -24,6 +24,7 @@ client.db = db;
 
 client.prefix = "$";
 client.loggingChannel = "1523439975645974619";
+client.credigsLoggingChannel = "1523725736848920808";
 
 require("./handlers/commandHandler")(client);
 require("./handlers/eventHandler")(client);
