@@ -47,14 +47,7 @@ module.exports = {
         ).run(userId, REWARD, REWARD);
 
         await loggingChannel.send({
-          embeds: [
-            new EmbedBuilder()
-              .setColor("Green")
-              .setTitle("Credits Reward")
-              .setDescription(
-                `<@${userId}> has been rewarded with **${REWARD}** credits for sending **${X}** messages.`,
-              ),
-          ],
+          content: `<@${userId}> has been rewarded with **${REWARD}** credits.`,
         });
       }
 
