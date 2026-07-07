@@ -117,4 +117,17 @@ CREATE TABLE IF NOT EXISTS message_xp (
 `,
 ).run();
 
+db.prepare(
+  `
+  CREATE TABLE IF NOT EXISTS bot_hosting (
+  bot_name TEXT PRIMARY KEY,
+  bot_id TEXT NOT NULL,
+  repo_url TEXT NOT NULL,
+  branch TEXT NOT NULL,
+  add_at INTEGER NOT NULL
+  updated_at INTEGER NOT NULL
+  )
+  `,
+);
+
 module.exports = db;
