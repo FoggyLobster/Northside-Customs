@@ -4,9 +4,12 @@ const antiNuke = require("../utils/antiNuke");
 module.exports = {
   name: "guildMemberUpdate",
 
-  async execute(member, oldMember) {
-    const logs = await member.guild.fetchAuditLogs({
-      type: AuditLogEvent.MemberUpdate,
+  async execute(oldMember, newMember) {
+    // Only detect role changes
+    if (oldMember.roles.cache.size === newMember.roles.cache.size) return;
+
+    const logs = await newMember.guild.fetchAuditLogs({
+      type: AuditLogEvent.MemberRoleUpdate,
 
       limit: 1,
     });
@@ -17,12 +20,21 @@ module.exports = {
 
     const executor = entry.executor;
 
+    if (!executor) return;
+
+    // Ignore bot actions
+    if (executor.bot) return;
+
     const nuking = antiNuke.addAction(executor.id, "memberUpdate");
 
     if (nuking) {
-      const oldMemberObj = await member.guild.members.fetch(executor.id);
+      const member = await newMember.guild.members
+        .fetch(executor.id)
+        .catch(() => null);
 
-      await antiNuke.punish(oldMemberObj, "Mass member update");
+      if (member) {
+        await antiNuke.punish(member, "Mass role updates");
+      }
     }
   },
 };
