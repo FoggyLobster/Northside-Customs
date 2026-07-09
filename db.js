@@ -117,6 +117,4 @@ CREATE TABLE IF NOT EXISTS message_xp (
 `,
 ).run();
 
-db.prepare(`DROP TABLE IF EXISTS bot_hosting`).run();
-
 module.exports = db;

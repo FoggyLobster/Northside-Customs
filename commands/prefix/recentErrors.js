@@ -6,7 +6,7 @@ module.exports = {
   description: "Shows the last X PM2 error log entries.",
 
   async execute(message, args) {
-    console.logs(`Logs command executed.`);
+    console.log(`Logs command executed.`);
 
     const isAdmin = message.member.permissions.has("Administrator");
 
