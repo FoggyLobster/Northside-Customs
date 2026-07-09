@@ -3,7 +3,7 @@ const { exec } = require("child_process");
 
 module.exports = {
   name: "logs",
-  description: "Shows the last 15 PM2 error log entries.",
+  description: "Shows the last X PM2 error log entries.",
 
   async execute(message, args) {
     const isAdmin = message.member.permissions.has("Administrator");
