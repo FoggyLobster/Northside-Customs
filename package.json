@@ -17,6 +17,10 @@
     "express": "^5.2.1",
     "fs": "^0.0.1-security",
     "git": "^0.1.5",
+    "nodemailer": "^9.0.3",
     "path": "^0.12.7"
+  },
+  "allowScripts": {
+    "nodemailer@9.0.3": true
   }
 }
