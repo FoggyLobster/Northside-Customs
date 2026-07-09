@@ -1,3 +1,5 @@
+const { ActionRowBuilder, ButtonBuilder } = require("discord.js");
+
 module.exports = {
   name: "guildMemberAdd",
 
@@ -12,31 +14,15 @@ module.exports = {
 
     const memberCount = member.guild.memberCount;
 
+    const row = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId("members")
+        .setLabel(`${member.guild.memberCount}`),
+    );
+
     if (channel) {
       await channel.send({
-        flags: 32768,
-        components: [
-          {
-            type: 10,
-            content: `Welcome, <@${member.id}> to **<:Northside:1520847420874031104> Northside Customs**! You are member \`#${memberCount}\`.`,
-          },
-          {
-            type: 1,
-            components: [
-              {
-                type: 2,
-                style: 2,
-                label: `${memberCount}`,
-                disabled: true,
-                emoji: {
-                  id: "1523695035076448457",
-                  name: "person",
-                  animated: false,
-                },
-              },
-            ],
-          },
-        ],
+        content: `Welcome, <@${member.id}> to **<:Northside:1520847420874031104> Northside Customs**! You are member \`#${memberCount}\`.`,
       });
     }
   },
