@@ -23,6 +23,7 @@ module.exports = {
     if (channel) {
       await channel.send({
         content: `Welcome, <@${member.id}> to **<:Northside:1520847420874031104> Northside Customs**! You are member \`#${memberCount}\`.`,
+        components: [row],
       });
     }
   },
