@@ -20,5 +20,7 @@ module.exports = {
       content: `Welcome, ${member} to **<:Northside:1520847420874031104> Northside Customs**! You are member \`#${member.guild.memberCount}\`.`,
       components: [row],
     });
+    const role = member.roles.cache.get("1520817494724706324");
+    if (role) await member.roles.add(role);
   },
 };
