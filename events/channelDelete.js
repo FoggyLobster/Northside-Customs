@@ -1,5 +1,5 @@
 const { AuditLogEvent } = require("discord.js");
-const antiNuke = require("../config/antiNuke");
+const antiNuke = require("../utils/antiNuke");
 
 module.exports = {
   name: "channelDelete",
