@@ -1,4 +1,4 @@
-const sendNukeAlert = require("./emailAlert");
+const sendNukeAlert = require("../utils/emailAlert");
 
 const actions = new Map();
 
