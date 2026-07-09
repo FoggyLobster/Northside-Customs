@@ -1,30 +1,33 @@
-const { ActionRowBuilder, ButtonBuilder } = require("discord.js");
+const {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ChannelType,
+} = require("discord.js");
 
 module.exports = {
   name: "guildMemberAdd",
 
-  async execute(client, member) {
-    console.log({
-      joinedUser: member.user.tag,
-      id: member.id,
-      bot: member.user.bot,
-    });
+  async execute(member) {
+    const channel = member.guild.channels.cache.get("1520788467351552190");
 
-    const channel = await member.guild.channels.fetch("1520788467351552190");
-
-    const memberCount = member.guild.memberCount;
+    if (!channel || channel.type !== ChannelType.GuildText) return;
 
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId("members")
-        .setLabel(`${member.guild.memberCount}`),
+        .setLabel(`${member.guild.memberCount}`)
+        .setStyle(ButtonStyle.Secondary)
+        .setDisabled(true),
     );
 
-    if (channel) {
+    try {
       await channel.send({
-        content: `Welcome, <@${member.id}> to **<:Northside:1520847420874031104> Northside Customs**! You are member \`#${memberCount}\`.`,
+        content: `Welcome, ${member} to **<:Northside:1520847420874031104> Northside Customs**! You are member \`#${member.guild.memberCount}\`.`,
         components: [row],
       });
+    } catch (err) {
+      console.error("Failed to send welcome message:", err);
     }
   },
 };
