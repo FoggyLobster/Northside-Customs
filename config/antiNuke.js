@@ -28,6 +28,11 @@ const config = {
       amount: 5,
       timeframe: 10000,
     },
+
+    everyonePing: {
+      amount: 5,
+      timeframe: 5000,
+    },
   },
 
   quarantineRole: "1524619612078084127",
