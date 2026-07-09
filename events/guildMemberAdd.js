@@ -1,9 +1,4 @@
-const {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ChannelType,
-} = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 module.exports = {
   name: "guildMemberAdd",
@@ -11,12 +6,12 @@ module.exports = {
   async execute(member) {
     const channel = member.guild.channels.cache.get("1520788467351552190");
 
-    if (!channel || channel.type !== ChannelType.GuildText) return;
+    if (!channel) return;
 
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId("members")
-        .setLabel(`${member.guild.memberCount}`)
+        .setLabel(member.guild.memberCount.toString())
         .setStyle(ButtonStyle.Secondary)
         .setDisabled(true),
     );
@@ -27,7 +22,7 @@ module.exports = {
         components: [row],
       });
     } catch (err) {
-      console.error("Failed to send welcome message:", err);
+      console.error(err);
     }
   },
 };
