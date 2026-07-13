@@ -6,7 +6,7 @@ module.exports = {
   name: "funds",
   description: `Shows the roblox groups funds`,
 
-  async execute(message, args) {
+  async execute(message) {
     if (message.author.bot) return;
 
     const GROUP_ID = "573074243";
