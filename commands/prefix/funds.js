@@ -31,7 +31,7 @@ module.exports = {
     };
 
     try {
-      const currentFunds = await axios.get(
+      const currentFundsRes = await axios.get(
         `https://economy.roblox.com/v1/groups/${GROUP_ID}/currency`,
         { headers },
       );
@@ -39,7 +39,7 @@ module.exports = {
       let pendingFunds = 0;
 
       try {
-        pendingFunds = await axios.get(
+        pendingFundsRes = await axios.get(
           `https://economy.roblox.com/v1/groups/${GROUP_ID}/revenue/summary/Day`,
           { headers },
         );
