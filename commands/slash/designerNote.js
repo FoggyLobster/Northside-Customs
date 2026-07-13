@@ -26,7 +26,6 @@ module.exports = {
     const subcommand = interaction.options.getSubcommand();
 
     if (subcommand === "note") {
-      const designer = interaction.options.getUser("designer");
       const note = interaction.options.getString("note");
 
       const isManager = interaction.member.roles.cache.has(
@@ -40,7 +39,13 @@ module.exports = {
         );
       }
 
-      const isDesigner = designer.member.roles.cache.has(`1520836300461183169`);
+      const designerUser = interaction.options.getUser("designer");
+
+      const designerMember = await interaction.guild.members.fetch(
+        designerUser.id,
+      );
+
+      const isDesigner = designerMember.roles.cache.has("1520836300461183169");
 
       if (!isDesigner) {
         return interaction.reply("This user is not a designer.");
