@@ -43,25 +43,27 @@ module.exports = {
           `https://economy.roblox.com/v1/groups/${GROUP_ID}/revenue/summary/Day`,
           { headers },
         );
+
+        pendingFunds = pendingFundsRes.data.revenue ?? 0;
       } catch (err) {
         console.log(err);
         message.reply("Something went wrong.");
       }
+
+      const currentFunds = currentFundsRes.data.robux ?? 0;
+      const totalFunds = currentFunds + pendingFunds;
+
+      const embed = new EmbedBuilder()
+        .setTitle("Roblox Group Funds")
+        .setDescription(
+          `Current funds: ${currentFunds}\nPending funds: ${pendingFunds}\nTotal funds: ${totalFunds}`,
+        )
+        .setColor("Green");
+
+      await message.reply({ embeds: [embed] });
     } catch (err) {
       message.reply("Something went wrong.");
       console.log(err);
     }
-
-    const currentFunds = currentFundsRes.data.robux ?? 0;
-    const totalFunds = currentFunds + pendingFunds;
-
-    const embed = new EmbedBuilder()
-      .setTitle("Roblox Group Funds")
-      .setDescription(
-        `Current funds: ${currentFunds}\nPending funds: ${pendingFunds}\nTotal funds: ${totalFunds}`,
-      )
-      .setColor("Green");
-
-    await message.reply({ embeds: [embed] });
   },
 };
