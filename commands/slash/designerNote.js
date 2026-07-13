@@ -26,6 +26,7 @@ module.exports = {
     const subcommand = interaction.options.getSubcommand();
 
     if (subcommand === "note") {
+      const designer = interaction.options.getUser("designer");
       const note = interaction.options.getString("note");
 
       const isManager = interaction.member.roles.cache.has(
