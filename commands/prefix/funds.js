@@ -10,7 +10,7 @@ module.exports = {
     if (message.author.bot) return;
 
     const GROUP_ID = "573074243";
-    const ROBLOSECURITY = noblox.setCookie(process.env.ROBLOX_COOKIE);
+    const ROBLOSECURITY = process.env.ROBLOX_COOKIE;
 
     const isAdmin = message.member.permissions.has("Administrator");
 
