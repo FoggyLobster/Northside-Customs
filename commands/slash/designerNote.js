@@ -58,7 +58,10 @@ module.exports = {
 
       const designerId = designer.id;
 
-      await interaction.reply("Adding note...");
+      await interaction.reply({
+        content: "Adding note...",
+        ephemeral: true,
+      });
 
       await logChannel.send({
         embeds: [
