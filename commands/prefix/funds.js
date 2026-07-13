@@ -45,10 +45,11 @@ module.exports = {
         );
       } catch (err) {
         console.log(err);
+        message.reply("Something went wrong.");
       }
     } catch (err) {
+      message.reply("Something went wrong.");
       console.log(err);
-      return message.channel.send("Something went wrong.");
     }
 
     const currentFunds = currentFundsRes.data.robux ?? 0;
