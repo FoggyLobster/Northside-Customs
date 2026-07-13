@@ -270,7 +270,41 @@ You have been issued an infraction in **Northside Customs.** Details can be foun
       }
 
       await voidedUser.send({
-        content: `The infraction with ID #${infractionId} has been voided by ${interaction.user}. If you have any questions please reach out to a management member.`,
+        flags: 32768,
+        components: [
+          {
+            type: 17,
+            components: [
+              {
+                type: 10,
+                content:
+                  "# <:BellwithNotification:1522593207672635463> Infraction Voided",
+              },
+              {
+                type: 14,
+                spacing: 1,
+              },
+              {
+                type: 10,
+                content: `The infraction with the ID **${infractionId}** has been voided in **Northside Customs.** Need further assistance? Create another support ticket anytime!`,
+              },
+              {
+                type: 14,
+                spacing: 2,
+              },
+              {
+                type: 12,
+                items: [
+                  {
+                    media: {
+                      url: "https://cdn.discordapp.com/attachments/1520826464948322334/1521567358643339444/image.png",
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       });
 
       db.prepare("DELETE FROM infractions WHERE id = ?").run(infractionId);
