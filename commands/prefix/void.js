@@ -26,11 +26,11 @@ module.exports = {
       return message.reply("Infraction not found in the database.");
     }
 
-    const issuer = await message.client.users.fetch(infraction.issuer_id);
+    const user = await message.client.users.fetch(infraction.user_id);
 
     const msg = await message.reply("Voiding the infraction...");
 
-    await issuer.send({
+    await user.send({
       flags: 32768,
       components: [
         {
