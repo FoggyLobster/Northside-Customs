@@ -85,7 +85,10 @@ ${totalFunds.toLocaleString()} Robux
         );
       }
 
-      return message.reply("Something went wrong while getting group funds.");
+      message.reply("Something went wrong while getting group funds.");
+
+      console.log("Cookie loaded:", !!process.env.ROBLOX_COOKIE);
+      console.log("Group ID:", GROUP_ID);
     }
   },
 };
