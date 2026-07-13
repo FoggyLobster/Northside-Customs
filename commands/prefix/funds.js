@@ -11,6 +11,9 @@ module.exports = {
     const GROUP_ID = "573074243";
     const ROBLOSECURITY = process.env.ROBLOX_COOKIE;
 
+    console.log("Cookie loaded:", !!process.env.ROBLOX_COOKIE);
+    console.log("Group ID:", GROUP_ID);
+
     const isAdmin = message.member.permissions.has("Administrator");
 
     if (!isAdmin) {
@@ -86,9 +89,6 @@ ${totalFunds.toLocaleString()} Robux
       }
 
       message.reply("Something went wrong while getting group funds.");
-
-      console.log("Cookie loaded:", !!process.env.ROBLOX_COOKIE);
-      console.log("Group ID:", GROUP_ID);
     }
   },
 };
