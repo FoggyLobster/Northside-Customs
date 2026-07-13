@@ -58,7 +58,7 @@ module.exports = {
 
       const designerId = designer.id;
 
-      await interaction.reply({
+      const msg = await interaction.reply({
         content: "Adding note...",
         ephemeral: true,
       });
@@ -74,7 +74,9 @@ module.exports = {
         ],
       });
 
-      await interaction.update({ content: "Note added!" });
+      await msg.edit({
+        content: `Note added to <@${designer.id}>.`,
+      });
     }
   },
 };
