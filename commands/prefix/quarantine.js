@@ -1,9 +1,5 @@
-const {
-  EmbedBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ActionRowBuilder,
-} = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
+const db = require("../../db");
 
 module.exports = {
   name: "q",
@@ -38,6 +34,12 @@ module.exports = {
       content: `You have been quarantined in **Northside Customs.**\nReason: ${reason}`,
     });
 
+    const roles = await user.roles.cache.map((role) => role.id);
+
+    db.prepare(
+      "INSERT INTO restoring_roles (user_id, roles_removed) VALUES (?, ?)",
+    ).run(userId, JSON.stringify(roles));
+
     const hasRoles =
       user.roles.cache.size > 0 &&
       user.roles.cache.forEach((role) => role.delete());
@@ -54,16 +56,8 @@ module.exports = {
       )
       .setTimestamp();
 
-    const button = new ButtonBuilder()
-      .setLabel("Revoke")
-      .setStyle(ButtonStyle.Danger)
-      .setCustomId("revoke");
-
-    const row = new ActionRowBuilder().addComponents(button);
-
     await botOwner.send({
       embeds: [embed],
-      components: [row],
     });
   },
 };

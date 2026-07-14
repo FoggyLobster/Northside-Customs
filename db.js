@@ -117,4 +117,13 @@ CREATE TABLE IF NOT EXISTS message_xp (
 `,
 ).run();
 
+db.prepare(
+  `
+  CREATE TABLE IF NOT EXISTS restoring_roles (
+  user_id TEXT PRIMARY KEY,
+  roles_removed TEXT NOT NULL,
+  )
+  `,
+).run();
+
 module.exports = db;
