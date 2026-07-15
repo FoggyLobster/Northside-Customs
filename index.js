@@ -31,5 +31,8 @@ require("./handlers/eventHandler")(client);
 require("./handlers/modalHandler")(client);
 require("./handlers/menuHandler")(client);
 require("./handlers/buttonHandler")(client);
+require("./handlers/antiNukeHandler")(client);
+
+antiNukeHandler(client);
 
 client.login(process.env.DISCORD_TOKEN);
