@@ -134,9 +134,5 @@ module.exports = {
         })
         .catch(() => {});
     }
-
-    await message.reply({
-      embeds: [embed],
-    });
   },
 };

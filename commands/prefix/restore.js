@@ -35,9 +35,7 @@ module.exports = {
       return message.reply("User not found.");
     }
 
-    if (member.roles.cache.has(QUARANTINE_ROLE)) {
-      await member.roles.remove(QUARANTINE_ROLE).catch(() => {});
-    }
+    await member.roles.remove(QUARANTINE_ROLE).catch(() => {});
 
     if (roles.length > 0) {
       await member.roles.add(roles).catch(() => {});
@@ -68,9 +66,5 @@ module.exports = {
         })
         .catch(() => {});
     }
-
-    await message.reply({
-      embeds: [embed],
-    });
   },
 };
