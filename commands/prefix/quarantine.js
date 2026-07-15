@@ -38,6 +38,10 @@ module.exports = {
       return message.reply("You cannot quarantine the bot.");
     }
 
+    if (member.id === message.guild.ownerId) {
+      return message.reply("You cannot quarantine the server owner.");
+    }
+
     if (
       member.roles.highest.position >=
       message.guild.members.me.roles.highest.position
@@ -51,11 +55,26 @@ module.exports = {
       return message.reply("This user is already quarantined.");
     }
 
+    const quarantineRole = message.guild.roles.cache.get(QUARANTINE_ROLE);
+
+    if (!quarantineRole) {
+      return message.reply("Quarantine role does not exist.");
+    }
+
+    if (
+      quarantineRole.position >= message.guild.members.me.roles.highest.position
+    ) {
+      return message.reply(
+        "The quarantine role is above or equal to the bot's highest role.",
+      );
+    }
+
     const roles = member.roles.cache
       .filter(
         (role) =>
           role.id !== message.guild.id &&
           role.id !== QUARANTINE_ROLE &&
+          !role.managed &&
           role.position < message.guild.members.me.roles.highest.position,
       )
       .map((role) => role.id);
@@ -68,14 +87,23 @@ module.exports = {
       (role) =>
         role.id !== message.guild.id &&
         role.id !== QUARANTINE_ROLE &&
+        !role.managed &&
         role.position < message.guild.members.me.roles.highest.position,
     );
 
-    if (rolesToRemove.size > 0) {
-      await member.roles.remove(rolesToRemove);
-    }
+    try {
+      if (rolesToRemove.size > 0) {
+        await member.roles.remove(rolesToRemove);
+      }
 
-    await member.roles.add(QUARANTINE_ROLE);
+      await member.roles.add(QUARANTINE_ROLE);
+    } catch (err) {
+      console.error(err);
+
+      return message.reply(
+        "I could not quarantine this user. Check role hierarchy and permissions.",
+      );
+    }
 
     await member
       .send(
@@ -100,7 +128,11 @@ module.exports = {
       .setTimestamp();
 
     if (botOwner) {
-      await botOwner.send({ embeds: [embed] }).catch(() => {});
+      await botOwner
+        .send({
+          embeds: [embed],
+        })
+        .catch(() => {});
     }
 
     await message.reply({
