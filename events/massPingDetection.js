@@ -16,11 +16,13 @@ const PING_LIMIT = 3;
 
 const pingCache = new Map();
 
+const BOT_ID = "1520825842815471656";
+
 module.exports = {
   name: "messageCreate",
 
   async execute(message) {
-    if (message.author.bot) return;
+    if (message.author.id === BOT_ID) return;
     if (!message.guild) return;
 
     if (IGNORE_CHANNELS.includes(message.channel.id)) return;
