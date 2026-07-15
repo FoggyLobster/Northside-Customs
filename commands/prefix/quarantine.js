@@ -134,5 +134,7 @@ module.exports = {
         })
         .catch(() => {});
     }
+
+    await message.reply(`<@${member.id}> has been quarantined.`);
   },
 };

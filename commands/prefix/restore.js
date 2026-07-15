@@ -66,5 +66,9 @@ module.exports = {
         })
         .catch(() => {});
     }
+
+    await message.reply({
+      content: `<@${member.id}>'s roles have been restored.`,
+    });
   },
 };
