@@ -1,5 +1,9 @@
 const { EmbedBuilder } = require("discord.js");
 
+function roundSeconds(seconds) {
+  return Math.round(seconds * 100) / 100;
+}
+
 function formatUptime(uptime) {
   const days = Math.floor(uptime / 86400);
   const hours = Math.floor((uptime % 86400) / 3600);
@@ -17,7 +21,7 @@ function formatUptime(uptime) {
   if (minutes) {
     parts.push(`${minutes}m`);
   }
-  parts.push(`${seconds}s`);
+  parts.push(`${roundSeconds(seconds)}s`);
 
   return parts.join(" ");
 }
