@@ -1,14 +1,15 @@
 const { EmbedBuilder } = require("discord.js");
 const db = require("../../db");
 
+const QUARANTINE_ROLE = "1524619612078084127";
+const BOT_OWNER = "1062166609931804702";
+
 module.exports = {
   name: "q",
   description: "Quarantine a user.",
 
   async execute(message, args) {
-    const isAdmin = message.member.permissions.has("Administrator");
-
-    if (!isAdmin) {
+    if (!message.member.permissions.has("Administrator")) {
       return message.reply("You do not have permission to use this command.");
     }
 
@@ -23,40 +24,86 @@ module.exports = {
       return message.reply("Please provide a reason.");
     }
 
-    const user = await message.client.users.fetch(userId);
+    const member = await message.guild.members.fetch(userId).catch(() => null);
 
-    if (!user) {
+    if (!member) {
       return message.reply("User not found.");
     }
 
-    await user.send({
-      flags: 64,
-      content: `You have been quarantined in **Northside Customs.**\nReason: ${reason}`,
-    });
+    if (member.id === message.author.id) {
+      return message.reply("You cannot quarantine yourself.");
+    }
 
-    const roles = await user.roles.cache.map((role) => role.id);
+    if (member.id === message.client.user.id) {
+      return message.reply("You cannot quarantine the bot.");
+    }
+
+    if (
+      member.roles.highest.position >=
+      message.guild.members.me.roles.highest.position
+    ) {
+      return message.reply(
+        "I cannot quarantine this user because their highest role is above mine.",
+      );
+    }
+
+    if (member.roles.cache.has(QUARANTINE_ROLE)) {
+      return message.reply("This user is already quarantined.");
+    }
+
+    const roles = member.roles.cache
+      .filter(
+        (role) =>
+          role.id !== message.guild.id &&
+          role.id !== QUARANTINE_ROLE &&
+          role.position < message.guild.members.me.roles.highest.position,
+      )
+      .map((role) => role.id);
 
     db.prepare(
-      "INSERT INTO restoring_roles (user_id, roles_removed) VALUES (?, ?)",
-    ).run(userId, JSON.stringify(roles));
+      "INSERT OR REPLACE INTO restoring_roles (user_id, roles_removed) VALUES (?, ?)",
+    ).run(member.id, JSON.stringify(roles));
 
-    const hasRoles =
-      user.roles.cache.size > 0 &&
-      user.roles.cache.forEach((role) => role.delete());
+    const rolesToRemove = member.roles.cache.filter(
+      (role) =>
+        role.id !== message.guild.id &&
+        role.id !== QUARANTINE_ROLE &&
+        role.position < message.guild.members.me.roles.highest.position,
+    );
 
-    await user.roles.add("1524619612078084127");
+    if (rolesToRemove.size > 0) {
+      await member.roles.remove(rolesToRemove);
+    }
 
-    const botOwner = await message.client.users.fetch("1062166609931804702");
+    await member.roles.add(QUARANTINE_ROLE);
+
+    await member
+      .send(
+        `You have been quarantined in **Northside Customs**.\n\nReason: ${reason}`,
+      )
+      .catch(() => {});
+
+    const botOwner = await message.client.users
+      .fetch(BOT_OWNER)
+      .catch(() => null);
 
     const embed = new EmbedBuilder()
       .setTitle("User Quarantined")
       .setColor(0xff0000)
       .setDescription(
-        `User <@${userId}> has been quarantined in **Northside Customs.**\nReason: ${reason}\n**Issuing user:** <@${message.author.id}>`,
+        `User: <@${member.id}>\nReason: ${reason}\nIssued By: <@${message.author.id}>`,
       )
+      .addFields({
+        name: "Roles Removed",
+        value: `${roles.length}`,
+      })
       .setTimestamp();
 
-    await botOwner.send({
+    if (botOwner) {
+      await botOwner.send({ embeds: [embed] }).catch(() => {});
+    }
+
+    await message.reply({
       embeds: [embed],
     });
   },

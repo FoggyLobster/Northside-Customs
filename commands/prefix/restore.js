@@ -1,11 +1,15 @@
+const { EmbedBuilder } = require("discord.js");
+const db = require("../../db");
+
+const QUARANTINE_ROLE = "1524619612078084127";
+const BOT_OWNER = "1062166609931804702";
+
 module.exports = {
   name: "restore",
   description: "Restores a user's roles.",
 
   async execute(message, args) {
-    const isAdmin = message.member.permissions.has("Administrator");
-
-    if (!isAdmin) {
+    if (!message.member.permissions.has("Administrator")) {
       return message.reply("You do not have permission to use this command.");
     }
 
@@ -15,40 +19,58 @@ module.exports = {
       return message.reply("Please provide a user ID.");
     }
 
-    const roles = JSON.parse(
-      db
-        .prepare("SELECT roles_removed FROM restoring_roles WHERE user_id = ?")
-        .get(userId),
-    );
+    const row = db
+      .prepare("SELECT roles_removed FROM restoring_roles WHERE user_id = ?")
+      .get(userId);
 
-    if (!roles) {
+    if (!row) {
+      return message.reply("No saved roles were found for this user.");
+    }
+
+    const roles = JSON.parse(row.roles_removed);
+
+    const member = await message.guild.members.fetch(userId).catch(() => null);
+
+    if (!member) {
       return message.reply("User not found.");
     }
 
-    const user = await message.client.users.fetch(userId);
-
-    if (!user) {
-      return message.reply("User not found.");
+    if (member.roles.cache.has(QUARANTINE_ROLE)) {
+      await member.roles.remove(QUARANTINE_ROLE).catch(() => {});
     }
 
-    await user.roles.add(roles);
-
-    const botOwner = await message.client.users.fetch("1062166609931804702");
-
-    const embed = new EmbedBuilder()
-      .setTitle("User Restored")
-      .setColor(0xff0000)
-      .setDescription(
-        `User <@${userId}> has been restored in **Northside Customs.**\n**Issuing user:** <@${message.author.id}>`,
-      )
-      .setTimestamp();
-
-    await botOwner.send({
-      embeds: [embed],
-    });
+    if (roles.length > 0) {
+      await member.roles.add(roles).catch(() => {});
+    }
 
     db.prepare("DELETE FROM restoring_roles WHERE user_id = ?").run(userId);
 
-    message.reply("User roles restored.");
+    const botOwner = await message.client.users
+      .fetch(BOT_OWNER)
+      .catch(() => null);
+
+    const embed = new EmbedBuilder()
+      .setTitle("User Restored")
+      .setColor(0x00ff00)
+      .setDescription(
+        `User: <@${member.id}>\nIssued By: <@${message.author.id}>`,
+      )
+      .addFields({
+        name: "Roles Restored",
+        value: `${roles.length}`,
+      })
+      .setTimestamp();
+
+    if (botOwner) {
+      await botOwner
+        .send({
+          embeds: [embed],
+        })
+        .catch(() => {});
+    }
+
+    await message.reply({
+      embeds: [embed],
+    });
   },
 };
