@@ -1,5 +1,5 @@
 const { Events, EmbedBuilder } = require("discord.js");
-const db = require("../../db");
+const db = require("../db");
 
 const BOT_OWNER_ID = "1062166609931804702";
 const QUARANTINE_ROLE = "1524619612078084127";
