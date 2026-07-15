@@ -17,7 +17,7 @@ const PING_LIMIT = 3;
 const pingCache = new Map();
 
 module.exports = {
-  name: Events.MessageCreate,
+  name: MessageCreate,
 
   async execute(message) {
     if (message.author.bot) return;
