@@ -1,7 +1,7 @@
 const { ChannelType, PermissionFlagsBits } = require("discord.js");
 const db = require("../db");
 
-function generateTicketId(length = 6) {
+function generateTicketId(length = 15) {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let id = "";
 

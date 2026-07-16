@@ -3,7 +3,7 @@ const db = require("../db");
 
 const Support_roles = ["1520836300461183169"];
 
-function generateTicketId(length = 6) {
+function generateTicketId(length = 15) {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let id = "";
 
