@@ -1,6 +1,7 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, Collection } = require("discord.js");
 
 function getPrefixCmds(client) {
+  client.prefixCommands = new Collection();
   const cmds = [];
 
   client.prefixCommands.forEach((command) => {
@@ -11,6 +12,7 @@ function getPrefixCmds(client) {
 }
 
 function getSlashCmds(client) {
+  client.slashCommands = new Collection();
   const cmds = [];
 
   client.slashCommands.forEach((command) => {
