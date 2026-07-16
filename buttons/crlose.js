@@ -44,7 +44,7 @@ module.exports = {
             },
             {
               type: 10,
-              content: `The ticket with the ID **${ticketId}** has been closed in **Northside Customs.** Need further assistance? Create another support ticket anytime!`,
+              content: `Your ticket in **Northside Customs** has been closed. If you have any questions, please, do not hesitate to open another ticket!\n\n-# Ticket ID: ${ticketId} | Today at ${new Date().toLocaleTimeString()}`,
             },
             {
               type: 14,
