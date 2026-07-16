@@ -1,18 +1,23 @@
 const { EmbedBuilder } = require("discord.js");
 
 function getPrefixCmds(client) {
-  return (
-    client.prefixCommands.map((cmd) => `\`${cmd.name}\``).join("\n") ||
-    "No prefix commands found."
-  );
+  const cmds = [];
+
+  client.prefixCommands.forEach((command) => {
+    cmds.push(`\`${command.name}\``);
+  });
+
+  return cmds.length ? cmds.join("\n") : "No prefix commands found.";
 }
 
 function getSlashCmds(client) {
-  return (
-    client.slashCommands
-      .map((cmd) => `\`/${cmd.data?.name || cmd.name}\``)
-      .join("\n") || "No slash commands found."
-  );
+  const cmds = [];
+
+  client.slashCommands.forEach((command) => {
+    cmds.push(`\`/${command.data?.name || command.name}\``);
+  });
+
+  return cmds.length ? cmds.join("\n") : "No slash commands found.";
 }
 
 module.exports = {
