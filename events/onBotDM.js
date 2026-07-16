@@ -6,8 +6,10 @@ module.exports = {
   async execute(message) {
     if (message.author.bot) return;
 
-    const logChannel = message.guild.channels.cache.get("1003143783593774080");
-    if (!logChannel) return;
+    const logChannel = message.guild.channels.cache.get("1527120603478229163");
+    if (!logChannel) {
+      console.log("Could not find log channel. (Bot DMing)");
+    }
 
     const userId = message.author.id;
 
