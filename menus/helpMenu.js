@@ -1,46 +1,50 @@
 const { EmbedBuilder } = require("discord.js");
 
-function getPrefixCmds() {
-  const cmds = [];
-  client.prefixCommands.forEach((cmd) => {
-    cmds.push(`\`${cmd.name}\``);
-  });
-  return cmds.join("\n");
+function getPrefixCmds(client) {
+  return (
+    client.prefixCommands.map((cmd) => `\`${cmd.name}\``).join("\n") ||
+    "No prefix commands found."
+  );
 }
 
-function getSlashCmds() {
-  const cmds = [];
-  client.slashCommands.forEach((cmd) => {
-    cmds.push(`\`${cmd.name}\``);
-  });
-  return cmds.join("\n");
+function getSlashCmds(client) {
+  return (
+    client.slashCommands
+      .map((cmd) => `\`/${cmd.data?.name || cmd.name}\``)
+      .join("\n") || "No slash commands found."
+  );
 }
 
 module.exports = {
   customId: "helpmenu",
 
-  async execute(interaction) {
+  async execute(interaction, client) {
     const selected = interaction.values[0];
 
-    if (selected === "prefixcmds") {
-      const embed = new EmbedBuilder()
-        .setTitle("Prefix Commands")
-        .setDescription(getPrefixCmds())
-        .setColor("Blurple");
+    let embed;
 
-      await interaction.reply({
-        embeds: [embed],
-      });
+    if (selected === "prefixcmds") {
+      embed = new EmbedBuilder()
+        .setTitle("📖 Prefix Commands")
+        .setDescription(getPrefixCmds(client))
+        .setColor("Blurple");
     }
 
     if (selected === "slashcmds") {
-      const embed = new EmbedBuilder()
-        .setTitle("Slash Commands")
-        .setDescription(getSlashCmds())
+      embed = new EmbedBuilder()
+        .setTitle("⚡ Slash Commands")
+        .setDescription(getSlashCmds(client))
         .setColor("Blurple");
+    }
 
+    if (!embed) return;
+
+    if (interaction.replied || interaction.deferred) {
+      await interaction.followUp({ embeds: [embed], ephemeral: true });
+    } else {
       await interaction.reply({
         embeds: [embed],
+        ephemeral: true,
       });
     }
   },
