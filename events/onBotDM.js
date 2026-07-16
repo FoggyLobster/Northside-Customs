@@ -2,7 +2,7 @@ const { Events } = require("discord.js");
 
 module.exports = {
   // when the bot receives a DM
-  name: Events.MessageCreate,
+  name: "messageCreate",
   async execute(message) {
     if (message.author.bot) return;
 
