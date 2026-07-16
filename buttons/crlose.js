@@ -4,14 +4,6 @@ module.exports = {
   customId: "crclose",
 
   async execute(interaction) {
-    const isTicketChannel =
-      interaction.channel.name.startsWith("order-") ||
-      interaction.channel.name.startsWith("support-");
-
-    if (!isTicketChannel) {
-      return interaction.reply("This is not a ticket channel.");
-    }
-
     const ticket = db
       .prepare("SELECT * FROM tickets WHERE channel_id = ?")
       .get(interaction.channel.id);
