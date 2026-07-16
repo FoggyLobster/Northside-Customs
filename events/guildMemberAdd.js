@@ -21,6 +21,8 @@ module.exports = {
       components: [row],
     });
     const role = member.roles.cache.get("1520817494724706324");
-    if (role) await member.roles.add(role);
+    if (role) {
+      await member.roles.add(role);
+    }
   },
 };
