@@ -19,8 +19,9 @@ module.exports = {
       console.error(err);
     }
 
-    if (message.guild) {
+    if (!message.guild) {
       if (message.author.bot) return;
+      if (message.content.startsWith(client.prefix)) return;
 
       const logChannel = message.guild.channels.cache.get(
         "1527120603478229163",
