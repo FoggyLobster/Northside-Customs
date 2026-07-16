@@ -1,29 +1,8 @@
-function getCmds(client) {
-  const cmds = [];
-  client.commands.forEach((cmd) => {
-    cmds.push(`\`${cmd.name}\``);
-  });
-}
-
-function getCmdInfo(cmd) {
-  return `**Name:** \`${cmd.name}\`\n**Description:** ${cmd.description}\n**Usage:** \`${client.prefix}${cmd.name}\``;
-  parts.join("\n");
-}
-
-if (!cmd.description) {
-  return (cmd.description = "No description provided.");
-}
-
 module.exports = {
   name: "help",
   description: "Displays a list of commands or info about a specific command.",
 
   async execute(message) {
-    const cmds = [];
-
-    const cmdInfo = getCmdInfo(cmd);
-    cmds.push(cmdInfo);
-
     await message.reply({
       flags: 32768,
       components: [
