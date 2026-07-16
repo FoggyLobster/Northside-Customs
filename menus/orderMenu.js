@@ -38,7 +38,7 @@ module.exports = {
       .prepare(
         `SELECT * FROM tickets WHERE user = ? AND user_id = ? AND channel_id = ?`,
       )
-      .get(interaction.user.username, interaction.user.id, ticketCategory.id);
+      .get(interaction.user.username, interaction.user.id, ticket.id);
 
     if (ticketExists) {
       return interaction.editReply({
