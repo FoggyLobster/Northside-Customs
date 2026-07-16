@@ -7,7 +7,7 @@ module.exports = {
     const isOwner = message.member.id === "1062166609931804702";
 
     if (!isOwner) {
-      return message.reploy("How bout no.");
+      return message.reply("How bout no.");
     }
 
     const msg = await message.reply(
