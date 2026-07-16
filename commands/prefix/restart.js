@@ -6,6 +6,10 @@ module.exports = {
   async execute(message) {
     const isOwner = message.member.id === "1062166609931804702";
 
+    if (!isOwner) {
+      return message.reploy("How bout no.");
+    }
+
     const msg = await message.reply(
       "Restarting & Syncing **Northside** with **<:gittihub:1522693027989028884> Github.**",
     );
