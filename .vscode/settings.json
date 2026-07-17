@@ -28,8 +28,6 @@
   "editor.stablePeek": true,
   "workbench.editor.enablePreview": false,
   "files.exclude": {
-    "**/package-lock.json": true,
-    "**/package.json": true,
     "**/node_modules": true
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
