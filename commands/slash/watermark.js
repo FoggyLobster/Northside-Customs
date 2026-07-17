@@ -1,68 +1,95 @@
 const { SlashCommandBuilder, AttachmentBuilder } = require("discord.js");
 const sharp = require("sharp");
 const axios = require("axios");
+const fs = require("fs");
+const path = require("path");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("watermark")
-    .setDescription("Adds a watermark to an image.")
+    .setDescription("Adds a watermark to an uploaded image.")
     .addAttachmentOption((option) =>
       option
         .setName("image")
-        .setDescription("Image to watermark")
+        .setDescription("The image to watermark")
         .setRequired(true),
     ),
 
   async execute(interaction) {
     await interaction.deferReply();
 
-    const attachment = interaction.options.getAttachment("image");
+    try {
+      const attachment = interaction.options.getAttachment("image");
 
-    const watermarkURL =
-      "https://cdn.discordapp.com/attachments/1520826464948322334/1527726832999206952/Dripzels_2D_Showcase_10_4.png";
+      if (!attachment.contentType?.startsWith("image/")) {
+        return interaction.editReply({
+          content: "Please upload a valid image.",
+        });
+      }
 
-    // Download images
-    const imageBuffer = (
-      await axios.get(attachment.url, {
-        responseType: "arraybuffer",
-      })
-    ).data;
+      const imageBuffer = (
+        await axios.get(attachment.url, {
+          responseType: "arraybuffer",
+        })
+      ).data;
 
-    const watermarkBuffer = (
-      await axios.get(watermarkURL, {
-        responseType: "arraybuffer",
-      })
-    ).data;
+      const watermarkPath = path.join(process.cwd(), "assets", "watermark.png");
 
-    // Get original image size
-    const image = sharp(imageBuffer);
-    const metadata = await image.metadata();
+      if (!fs.existsSync(watermarkPath)) {
+        return interaction.editReply({
+          content: "Could not find `assets/watermark.png`.",
+        });
+      }
 
-    // Resize watermark to 20% of image width
-    const resizedWatermark = await sharp(watermarkBuffer)
-      .resize({
-        width: Math.round(metadata.width * 0.2),
-      })
-      .png()
-      .toBuffer();
+      const watermarkBuffer = fs.readFileSync(watermarkPath);
 
-    // Composite watermark
-    const output = await image
-      .composite([
-        {
-          input: resizedWatermark,
-          gravity: "southeast",
-        },
-      ])
-      .png()
-      .toBuffer();
+      const image = sharp(imageBuffer);
+      const metadata = await image.metadata();
 
-    const file = new AttachmentBuilder(output, {
-      name: "watermarked.png",
-    });
+      if (!metadata.width || !metadata.height) {
+        return interaction.editReply({
+          content: "Unable to read the uploaded image.",
+        });
+      }
 
-    await interaction.editReply({
-      files: [file],
-    });
+      const watermarkWidth = Math.round(metadata.width * 0.2);
+
+      const resizedWatermark = await sharp(watermarkBuffer)
+        .resize({
+          width: watermarkWidth,
+        })
+        .ensureAlpha(0.35)
+        .png()
+        .toBuffer();
+
+      const watermarkMeta = await sharp(resizedWatermark).metadata();
+
+      const margin = 20;
+
+      const output = await image
+        .composite([
+          {
+            input: resizedWatermark,
+            left: metadata.width - watermarkMeta.width - margin,
+            top: metadata.height - watermarkMeta.height - margin,
+          },
+        ])
+        .png()
+        .toBuffer();
+
+      const file = new AttachmentBuilder(output, {
+        name: "watermarked.png",
+      });
+
+      await interaction.editReply({
+        files: [file],
+      });
+    } catch (err) {
+      console.error(err);
+
+      await interaction.editReply({
+        content: "An error occurred while processing the image.",
+      });
+    }
   },
 };
