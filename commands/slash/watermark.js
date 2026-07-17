@@ -4,7 +4,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("watermark")
     .setDescription("Add a watermark to an image.")
-    .addStringOption((option) =>
+    .addAttachmentOption((option) =>
       option
         .setName("image")
         .setDescription("The image to add the watermark to.")
