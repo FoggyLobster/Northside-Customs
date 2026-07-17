@@ -1,24 +1,68 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, AttachmentBuilder } = require("discord.js");
+const sharp = require("sharp");
+const axios = require("axios");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("watermark")
-    .setDescription("Add a watermark to an image.")
+    .setDescription("Adds a watermark to an image.")
     .addAttachmentOption((option) =>
       option
         .setName("image")
-        .setDescription("The image to add the watermark to.")
+        .setDescription("Image to watermark")
         .setRequired(true),
     ),
+
   async execute(interaction) {
-    const image = interaction.options.getString("image");
-    const WATERMARK_URL =
-      "https://cdn.discordapp.com/attachments/1520826464948322334/1527726832999206952/Dripzels_2D_Showcase_10_4.png?ex=6a5bb5fc&is=6a5a647c&hm=a0985ab305eaf5a22d3d4b941f1113c044e82ca4045fb877b652a44d3d7447ac&";
+    await interaction.deferReply();
 
-    const finishedImage = `${image}?watermark=${WATERMARK_URL}`;
+    const attachment = interaction.options.getAttachment("image");
 
-    await interaction.reply({
-      content: finishedImage,
+    const watermarkURL =
+      "https://cdn.discordapp.com/attachments/1520826464948322334/1527726832999206952/Dripzels_2D_Showcase_10_4.png";
+
+    // Download images
+    const imageBuffer = (
+      await axios.get(attachment.url, {
+        responseType: "arraybuffer",
+      })
+    ).data;
+
+    const watermarkBuffer = (
+      await axios.get(watermarkURL, {
+        responseType: "arraybuffer",
+      })
+    ).data;
+
+    // Get original image size
+    const image = sharp(imageBuffer);
+    const metadata = await image.metadata();
+
+    // Resize watermark to 20% of image width
+    const resizedWatermark = await sharp(watermarkBuffer)
+      .resize({
+        width: Math.round(metadata.width * 0.2),
+      })
+      .png()
+      .toBuffer();
+
+    // Composite watermark
+    const output = await image
+      .composite([
+        {
+          input: resizedWatermark,
+          gravity: "southeast",
+        },
+      ])
+      .png()
+      .toBuffer();
+
+    const file = new AttachmentBuilder(output, {
+      name: "watermarked.png",
+    });
+
+    await interaction.editReply({
+      files: [file],
     });
   },
 };
