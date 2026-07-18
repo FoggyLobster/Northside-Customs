@@ -21,7 +21,7 @@ function formatUptime(uptime) {
   if (minutes) {
     parts.push(`${minutes}m`);
   }
-  parts.push(`${roundSeconds(seconds)}s`);
+  parts.push(`${roundtoNearestSecond(seconds)}s`);
 
   return parts.join(" ");
 }
