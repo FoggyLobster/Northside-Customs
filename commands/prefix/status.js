@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require("discord.js");
 
-function roundSeconds(seconds) {
-  return Math.round(seconds * 100) / 100;
+function roundtoNearestSecond(seconds) {
+  return Math.round(seconds * 10000) / 10000;
 }
 
 function formatUptime(uptime) {
